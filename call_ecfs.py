@@ -26,9 +26,6 @@ def fetch_ecfs(obs,year,month,scratch,destination):
     '''
     single call to ecfs according to DTG
     '''
-    found_files = None
-    files_to_copy = None
-    copy_com = None
     print("Checking observations %s"%obs)
     if obs == 'CONV':
         fu.fetch_CONV(obs,year,month,scratch,destination)
@@ -38,7 +35,7 @@ def fetch_ecfs(obs,year,month,scratch,destination):
         print(f"No implementation for {obs} just yet!")
         print("Currently doing ONLY conventional observations (obsoul)")
         sys.exit()
-    return copy_com
+    return None
 
 
 def run_comms(comms):
@@ -47,7 +44,8 @@ def run_comms(comms):
         try:
             ret=subprocess.check_output(cmd,shell=True)
         except subprocess.CalledProcessError as err:
-            print("Error in subprocess {}".format(err))
+            print(f"Error in subprocess {err}")
+            print(ret)
 
 def read_yaml(file_path):
     import yaml
@@ -87,7 +85,7 @@ def main(args):
     # Otherwise go through all streams
 
     if not args.auto:
-        if args.year == None or args.month == None:
+        if args.year is None or args.month is None:
             print("Please provide year and month!")
             sys.exit(1)
         else:

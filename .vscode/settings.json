@@ -1,0 +1,8 @@
+{
+    "python.pythonPath": "/home/cperalta/anaconda3/envs/py39/bin/python",
+    "python.linting.enabled": true,
+    "python.condaPath": "/home/cperalta/anaconda3/envs/py39/bin/python",
+    "python.linting.pylintPath": "/home/cperalta/anaconda3/envs/py39/bin/pylint",
+    "python.linter": "/home/cperalta/anaconda3/envs/py39/bin/pylint",
+    "python.linting.pylintEnabled": true
+}

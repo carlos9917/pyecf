@@ -5,6 +5,8 @@ import os
 import numpy as np
 from collections import OrderedDict
 import re
+from datetime import datetime
+from datetime import timedelta
 
 #hhome = "/ws/home/ms/dk/nhx/hm_home"
 
@@ -39,15 +41,10 @@ def days_month(month,year):
         ndays=30
     elif month == 2:
         #Evaluation for leap years from https://bash.cyberciti.biz/time-and-date/find-whether-year-ls-leap-or-not/
-        if year%4 != 0:
-            ndays=28
-        elif year%400 == 0:
-            ndays=29
-        elif year%100 == 0:
+        if year % 4 != 0 or year % 400 != 0 and year % 100 == 0:
             ndays=28
         else:
             ndays=29
-
     return ndays
 
 
