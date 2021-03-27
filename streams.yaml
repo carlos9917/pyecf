@@ -1,7 +1,7 @@
 #scratch is set to nhe here bc all obs data will be copied there
 HARMONIE:
   SCRATCH: "/scratch/ms/dk/nhe"
-  HHOME: "/ws/home/ms/dk/"
+  HHOME: "/ws/home/ms/dk/nhe"
 STREAMS:
   dkrea198909:
     BEG_DATE: 1989090100
