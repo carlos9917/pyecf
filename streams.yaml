@@ -1,7 +1,8 @@
 #scratch is set to nhe here bc all obs data will be copied there
-HARMONIE:
-  SCRATCH: "/scratch/ms/dk/nhe"
-  HHOME: "/ws/home/ms/dk/nhe"
+# SCRATCH and HHOME will change according to the stream and user
+#HARMONIE:
+#  SCRATCH: "/scratch/ms/dk"
+#  HHOME: "/ws/home/ms/dk"
 STREAMS:
   dkrea198909:
     BEG_DATE: 1989090100
@@ -52,18 +53,19 @@ STREAMS:
 # These are the paths of the different types of observations
 # File name is constructed as
 # FPRE_NAMINGCONV_FEND
-OBSFILES:
+# Currently these are only placeholders. Not using yet
+OBS:
   CONV:
-    ECFSPATH: /rml/precise/obs/obsoul/locobs/v11jun20
-    SCRPATH: "LocalObsdata"
+    ECFSPATH: "ec:/rml/precise/obs/obsoul/locobs/v11jun20"
+    OBSDIR: "LocalObsdata"
     SUBDIR: "YYYY/MM"
     FILETYPE: "SINGLE"
     NAMINGCONV: "YYYYMMDDHH"
     FPRE: "obsoul"
     FEND: ""
   RO:
-    ECFSPATH: /smoz/Observations/GNSSRO
-    SCRPATH: "ROdata"
+    ECFSPATH: "ec:/smoz/Observations/GNSSRO"
+    OBSDIR: "ROdata"
     SUBDIR: ""
     FILETYPE: "TAR"
     NAMINGCONV: "YYYYMM"
