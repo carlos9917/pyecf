@@ -1,8 +1,4 @@
-#scratch is set to nhe here bc all obs data will be copied there
-# SCRATCH and HHOME will change according to the stream and user
-#HARMONIE:
-#  SCRATCH: "/scratch/ms/dk"
-#  HHOME: "/ws/home/ms/dk"
+# List of streams, indicating if they are active or not
 STREAMS:
   dkrea198909:
     BEG_DATE: 1989090100
@@ -51,12 +47,13 @@ STREAMS:
     ACTIVE: True
 
 # These are the paths of the different types of observations
-# File name is constructed as
-# FPRE_NAMINGCONV_FEND
 # Currently these are only placeholders. Not using yet
+# If LOCALPATH defined, it will use the local data and
+# not the ECFSPATH
 OBS:
   CONV:
     ECFSPATH: "ec:/rml/precise/obs/obsoul/locobs/v11jun20"
+    LOCALPATH: "/ws/scratch/ms/dk/nhb/"
     OBSDIR: "LocalObsdata"
     SUBDIR: "YYYY/MM"
     FILETYPE: "SINGLE"
@@ -65,6 +62,7 @@ OBS:
     FEND: ""
   RO:
     ECFSPATH: "ec:/smoz/Observations/GNSSRO"
+    LOCALPATH: ""
     OBSDIR: "ROdata"
     SUBDIR: ""
     FILETYPE: "TAR"

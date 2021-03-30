@@ -15,7 +15,6 @@ import numpy as np
 import fetch_utils as fu
 import date_utils as du
 
-
 def fetch_ecfs(obs,ecfspath,year,month,destination):
     '''
     single call to ecfs according to DTG
@@ -29,7 +28,6 @@ def fetch_ecfs(obs,ecfspath,year,month,destination):
         print(f"No implementation for {ecfspath} just yet!")
         print("Currently doing ONLY CONV and RO observations")
         sys.exit()
-    return None
 
 
 def run_comms(comms):
