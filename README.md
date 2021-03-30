@@ -19,7 +19,10 @@ Define observation types in the OBS section
 OBS:
   CONV:
     ECFSPATH: "ec:/rml/precise/obs/obsoul/locobs/v11jun20"
+    LOCALPATH: path
     OBSDIR: "LocalObsdata"
     SUBDIR: "YYYY/MM"
 
+If LOCALPATH defined it will copy local data instead of copying from ECFS
+(currently only for RO)
 

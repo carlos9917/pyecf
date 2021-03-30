@@ -53,7 +53,7 @@ STREAMS:
 OBS:
   CONV:
     ECFSPATH: "ec:/rml/precise/obs/obsoul/locobs/v11jun20"
-    LOCALPATH: "/ws/scratch/ms/dk/nhb/"
+    LOCALPATH: ""
     OBSDIR: "LocalObsdata"
     SUBDIR: "YYYY/MM"
     FILETYPE: "SINGLE"
@@ -62,7 +62,7 @@ OBS:
     FEND: ""
   RO:
     ECFSPATH: "ec:/smoz/Observations/GNSSRO"
-    LOCALPATH: ""
+    LOCALPATH: "/ws/scratch/ms/dk/nhb"
     OBSDIR: "ROdata"
     SUBDIR: ""
     FILETYPE: "TAR"

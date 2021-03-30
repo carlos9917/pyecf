@@ -15,6 +15,12 @@ import numpy as np
 import fetch_utils as fu
 import date_utils as du
 
+def fetch_local(obs,fpre,fend,localpath,year,month,destination):
+    if obs == 'RO':
+        fu.fetch_RO_local(localpath,fpre,fend,year,month,destination)
+    else:
+        print(f"No local data available for {obs}!")
+
 def fetch_ecfs(obs,ecfspath,year,month,destination):
     '''
     single call to ecfs according to DTG
@@ -49,14 +55,21 @@ def fetch_data(yaml_args):
     month = yaml_args["CL_ARGS"]["MONTH"]
     obs = yaml_args["CL_ARGS"]["OBS"]
     fpre = yaml_args["OBS"][obs]["FPRE"]
+    fend = yaml_args["OBS"][obs]["FEND"]
     scratch =yaml_args["SCRATCH"]
     obsdir = yaml_args["OBS"][obs]["OBSDIR"]
     ecfspath = yaml_args["OBS"][obs]["ECFSPATH"]
+    localpath = yaml_args["OBS"][obs]["LOCALPATH"] #Use this path if defined
     #check first if data already there
     destination = fu.create_destination(obsdir,year,month,scratch)
     files_present = fu.test_if_present(obs,year,month,fpre,destination)
     if not files_present:
-        fetch_ecfs(obs,ecfspath,year,month,destination)
+        if len(localpath) != 0:
+            print(f"Fetching data locally from: {localpath}")
+            fetch_local(obs,fpre,fend,localpath,year,month,destination)
+        else:
+            print(f"Fetching data from ECFS: {ecfspath}")
+            fetch_ecfs(obs,ecfspath,year,month,destination)
     else:
         print(f"Observations for {args.year}/{args.month} already copied!")
 
@@ -87,7 +100,7 @@ def main(args):
 
     if not args.auto:
         if args.year is None or args.month is None:
-            print("Please provide year and month!")
+            print(args.help)
             sys.exit(1)
         else:
             yaml_args["CL_ARGS"]["YEAR"] = args.year
@@ -125,32 +138,37 @@ def main(args):
 if __name__=='__main__':
     import argparse
     from argparse import RawTextHelpFormatter
-    parser = argparse.ArgumentParser(description='''Copies a whole month
-            Example usage: python3 call_ecfs.py -year 1997 -month 1 -obs CONV ''',formatter_class=RawTextHelpFormatter)
+    parser = argparse.ArgumentParser(description='''
+            Fetch data from ecfs or local path to predetermined locations in $SCRATCH for a given
+            month and year
 
-    parser.add_argument('-month',metavar='month to pull out (integer)',
+            Example usage: python3 call_ecfs.py -year 1997 -month 1 -obs CONV (for specific year and month)
+                           python3 call_ecfs.py -auto -obs CONV (it will read latest DTG from MCI progress file of corresponding stream) ''',formatter_class=RawTextHelpFormatter)
+
+    parser.add_argument('-month',metavar='month to fetch (integer)',
                         type=int,
                         default=None,
                         required=False)
 
-    parser.add_argument('-year',metavar='year to pull out (integer)',
+    parser.add_argument('-year',metavar='year to fetch (integer)',
                         type=int,
                         default=None,
                         required=False)
    
-    parser.add_argument('-obs',metavar='Observation source to be processed',
+    parser.add_argument('-obs',metavar='Observation source to be processed (currently only CONV or RO)',
                         type=str,
                         default="CONV",
                         required=False)
     #if this one is used it will get the year and month from the latest progress.log
-    parser.add_argument('-auto',action='store_true') # set to false by default
-    parser.add_argument('-test',action='store_true') # set to false by default
-    parser.add_argument('-yfile',metavar='name of the yaml config file',
+    parser.add_argument('-auto',action='store_true',help="If selected it will decide month and year based on current progressMCI.log") # set to false by default
+    parser.add_argument('-test',action='store_true',help="For testing. It will write all data in directories $SCRATCH/tmp") # set to false by default
+    parser.add_argument('-yfile',metavar='name of the yaml config file (default is streams.yaml)',
                         type=str,
                         default="./streams.yaml",
                         required=False)
 
     args = parser.parse_args()
+    args.help =  parser.print_help()
     main(args)
     #List of observation types
     # CONV,RO

@@ -7,11 +7,28 @@ import re
 import date_utils as du
 import sys
 
+def fetch_RO_local(localpath,fpre,fend,year,month,destination):
+    print("Attempting to fetch RO observations locally")
+    tarball = "_".join([fpre,str(year)+str(month).zfill(2),fend])
+    obspath = os.path.join(localpath,tarball)
+    if os.path.isfile(obspath):
+        from shutil import copy2
+        copy2(obspath,os.path.join(destination,tarball))
+        #untar and delete file
+        cdir=os.getcwd()
+        os.chdir(destination)
+        cmd = "tar xvf "+tarball
+        ret=subprocess.check_output(cmd,shell=True)
+        os.remove(tarball)
+        os.chdir(cdir)
+    else:
+        print(f"{obspath} does not exist!")
+
 def fetch_CONV(ecfspath,year,month,destination):
     '''
     This copies all conventional observations for a given month and year
     '''
-    print("Attemtping to fetch CONV observations")
+    print("Attempting to fetch CONV observations")
     obspath = os.path.join(ecfspath,str(year),str(month).zfill(2))
     #First check if file(s)there
     try:
@@ -41,7 +58,7 @@ def fetch_RO(ecfspath,tarball,destination):
     Fetch RO data. In this case we grab .tar balls
     and uncompress them in destination directory
     '''
-    print("Attemtping to fetch RO observations")
+    print("Attempting to fetch RO observations")
     obspath = os.path.join(ecfspath,tarball)
     try:
         cmd = "els "+obspath
