@@ -73,7 +73,7 @@ def fetch_data(yaml_args):
     else:
         print(f"Observations for {args.year}/{args.month} already copied!")
 
-def main(args):
+def main(args,parser):
     HHOME = "/ws/home/ms/dk"
     #Read arguments from the yaml file
     yaml_args = read_yaml(args.yfile)
@@ -100,7 +100,7 @@ def main(args):
 
     if not args.auto:
         if args.year is None or args.month is None:
-            print(args.help)
+            parser.print_help()
             sys.exit(1)
         else:
             yaml_args["CL_ARGS"]["YEAR"] = args.year
@@ -116,11 +116,12 @@ def main(args):
             hh = os.path.join(HHOME,yaml_args["STREAMS"][st]["USER"],"hm_home")
             DTG = du.get_current_dtg(hh,st)
             year,month = du.calc_year_month(DTG,mdays=15)
-            print(f"Latest year and month from {st} progressMCI.log: {year} {month}")
             if year != None and month != None:
+                print(f"Year and month to be fetch for {st} based on  progressMCI.log: {year} {month}")
                 yyyymm.append(year+"_"+month)
             else:
                 print(f"Doing nothing for {st}")
+                sys.exit(0)
         #remove all repeated values, so I dont request a month year more than once
         yyyymm = list(set(yyyymm))
         for ym in yyyymm:
@@ -168,8 +169,8 @@ if __name__=='__main__':
                         required=False)
 
     args = parser.parse_args()
-    args.help =  parser.print_help()
-    main(args)
+    #args.help =  parser.print_help()
+    main(args,parser)
     #List of observation types
     # CONV,RO
     #If auto is not set, ask for params

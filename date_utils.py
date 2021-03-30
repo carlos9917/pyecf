@@ -23,9 +23,9 @@ def calc_year_month(cdate,mdays=15):
     if delta < mdays:
        domonth = datetime.strftime(next_dtg,"%m") 
        doyear = datetime.strftime(next_dtg,"%Y") 
-       print(f"Need to fetch {doyear} {domonth} ({delta} days until end of the month)")
+       #print(f"Need to fetch {doyear} {domonth} ({delta} days until end of the month)")
     else:
-       print(f"No need to fetch data yet, since still {delta} days until end of the month")
+       print(f"No need to fetch data yet, since still {delta} days until end of the current month")
 
     return doyear, domonth
 
@@ -55,7 +55,7 @@ def get_current_dtg(hhome,stream):
     pfile=os.path.join(hhome,stream,'progressMCI.log')
     with open(pfile, 'r') as f:
         lines=f.readlines()
-        print(lines[0])
+        #print(lines[0])
         cdate=re.search('DTGMCI=(.*) export',lines[0]).group(1)
 
     print(f"Current date in {stream}: {cdate}")
