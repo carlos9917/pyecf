@@ -7,8 +7,48 @@ import re
 import date_utils as du
 import sys
 
-def fetch_RO_local(localpath,fpre,fend,year,month,destination):
+def fetch_CRYO(ecfs,year,month,destination):
+    '''
+    Fetch the CRYO data, which is organized in two different
+    directories for East and West
+    '''
+    #data["OBS"]["CRYO"]["ECSUBDIR"]
+    ecfspath = ecfs["PATH"]
+    print("Attempting to fetch CONV observations")
+    #First check if file(s)there
+    for cdir in ecfs["SUBDIR"]:
+        obspath = os.path.join(ecfspath,cdir,str(year))
+        try:
+            fnames = "_".join([ecfs["FPRE"],str(year)+str(month).zfill(2)])+"*"
+            cmd = "els "+os.path.join(obspath,fnames)
+            ret = subprocess.check_output(cmd,shell=True) 
+            ret_clean = ret.rstrip().decode('utf-8')
+            files_found = ret_clean.split("\n") 
+            #add whole path to the file names:
+            files_found = [os.path.join(obspath,f) for f in files_found]
+            #print(f"Return from els: {files_found}")
+        except subprocess.CalledProcessError as err:
+            print("Error in subprocess {}".format(err))
+            print(f"Directory {obspath}")
+            print(f"Files probably not found!")
+            sys.exit(1)
+        if len(files_found) != 0:
+            fnames = "_".join([ecfs["FPRE"],str(year)+str(month).zfill(2)])+"*"
+            cmd="ecp "+os.path.join(obspath,fnames)+' '+destination
+            print("DEBUG CRYO command: %s"%cmd)
+            try:
+                ret=subprocess.check_output(cmd,shell=True)
+            except subprocess.CalledProcessError as err:
+                print(f'No data found for {cdir}: {err}')
+        else:
+            print(f"No data found for {year}")
+
+#def fetch_RO_local(localpath,fpre,fend,year,month,destination):
+def fetch_RO_local(localpath,ecfs,year,month,destination):
+    ecfspath = ecfs["PATH"]
     print("Attempting to fetch RO observations locally")
+    fpre = ecfs["FPRE"]
+    fend = ecfs["FEND"]
     tarball = "_".join([fpre,str(year)+str(month).zfill(2),fend])
     obspath = os.path.join(localpath,tarball)
     if os.path.isfile(obspath):
@@ -24,10 +64,11 @@ def fetch_RO_local(localpath,fpre,fend,year,month,destination):
     else:
         print(f"{obspath} does not exist!")
 
-def fetch_CONV(ecfspath,year,month,destination):
+def fetch_CONV(ecfs,year,month,destination):
     '''
     This copies all conventional observations for a given month and year
     '''
+    ecfspath = ecfs["PATH"]
     print("Attempting to fetch CONV observations")
     obspath = os.path.join(ecfspath,str(year),str(month).zfill(2))
     #First check if file(s)there
@@ -41,7 +82,9 @@ def fetch_CONV(ecfspath,year,month,destination):
         #print(f"Return from els: {files_found}")
     except subprocess.CalledProcessError as err:
         print("Error in subprocess {}".format(err))
-        print("Directory {}")
+        print(f"Directory {obspath}")
+        print(f"Files probably not found!")
+        sys.exit(1)
        
     if len(files_found) != 0:
         cmd="ecp "+os.path.join(obspath,"*")+' '+destination
@@ -53,11 +96,12 @@ def fetch_CONV(ecfspath,year,month,destination):
     else:
         print(f"No data found for {year} and {month}")
 
-def fetch_RO(ecfspath,tarball,destination):
+def fetch_RO(ecfs,tarball,destination):
     '''
     Fetch RO data. In this case we grab .tar balls
     and uncompress them in destination directory
     '''
+    ecfspath = ecfs["PATH"]
     print("Attempting to fetch RO observations")
     obspath = os.path.join(ecfspath,tarball)
     try:
@@ -70,7 +114,9 @@ def fetch_RO(ecfspath,tarball,destination):
         #print(f"Return from els: {files_found}")
     except subprocess.CalledProcessError as err:
         print("Error in subprocess {}".format(err))
-        print("Directory {}")
+        print(f"Directory {obspath}")
+        print(f"Files probably not found!")
+        sys.exit(1)
        
     if len(files_found) != 0:
         cmd="ecp "+obspath+' '+destination
@@ -121,13 +167,25 @@ def create_destination(obsdir,year,month,scratch):
     Create destination directory if it doesnt exist
     Return the path
     '''
-    if obsdir == "LocalObsdata":
-        obspath=os.path.join(scratch,obsdir) #,year,month) #"LocalObsdata")
-    elif obsdir == "ROdata":
-        obspath=os.path.join(scratch,obsdir)
+    obspath=os.path.join(scratch,obsdir["OBSDIR"]) #,year,month) #"LocalObsdata")
+    if len(obsdir["SUBDIR"]) == 0: #== "LocalObsdata":
+        if not os.path.isdir(obspath):
+            os.makedirs(obspath)
+    else:
+        for cdir in obsdir["SUBDIR"]:
+            if not os.path.isdir(obspath):
+                os.makedirs(os.path.join(obspath,cdir))
+     
+    #elif obsdir["OBSDIR"] == "ROdata":
+    #    obspath=os.path.join(scratch,obsdir)
+    #elif obsdir["OBSDIR"] == "CRYO":
+    #    import pdb
+    #    pdb.set_trace()
+    #    obspath=os.path.join(scratch,obsdir)
 
-    if not os.path.isdir(obspath):
-        os.makedirs(obspath)
+    #if not os.path.isdir(obspath):
+    #    os.makedirs(obspath)
+            
     return obspath
 
 
@@ -144,6 +202,9 @@ def test_if_present(obs,year,month,fpre,destination):
         obsYYMM = os.path.join(destination,fpre+"_"+str(year)+str(month).zfill(2))
     elif obs == "RO":
         fmin = 8 # Every 3 hours. du.days_month(month,year)
+        obsYYMM = os.path.join(destination,fpre+"_"+str(year)+str(month).zfill(2))
+    elif obs == "CRYO":
+        fmin = 28 # A file per day. TODO: calculate number of days in month here!
         obsYYMM = os.path.join(destination,fpre+"_"+str(year)+str(month).zfill(2))
     files_present=False
     import glob

@@ -21,5 +21,6 @@ module load python3
 #python3 ./call_ecfs.py -auto -obs RO -test
 #python3 ./call_ecfs.py -month 8 -year 2020 -obs RO 
 
-python3 ./call_ecfs.py -auto -obs CONV -test
-python3 ./call_ecfs.py -auto -obs RO -test
+#python3 ./call_ecfs.py -auto -obs CONV -test
+#python3 ./call_ecfs.py -auto -obs RO -test -mdays 25
+python3 ./call_ecfs.py -auto -obs CRYO -test -mdays 25

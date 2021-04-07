@@ -15,22 +15,27 @@ import numpy as np
 import fetch_utils as fu
 import date_utils as du
 
-def fetch_local(obs,fpre,fend,localpath,year,month,destination):
+def fetch_local(obs,ecfs,localpath,year,month,destination):
     if obs == 'RO':
-        fu.fetch_RO_local(localpath,fpre,fend,year,month,destination)
+        #fu.fetch_RO_local(localpath,fpre,fend,year,month,destination)
+        fu.fetch_RO_local(localpath,ecfs,year,month,destination)
     else:
         print(f"No local data available for {obs}!")
 
-def fetch_ecfs(obs,ecfspath,year,month,destination):
+def fetch_ecfs(obs,ecfs,year,month,destination):
     '''
     single call to ecfs according to DTG
     '''
     if obs == 'CONV':
-        fu.fetch_CONV(ecfspath,year,month,destination)
+        fu.fetch_CONV(ecfs,year,month,destination)
     elif obs == 'RO':
-        tarball = "_".join(["GPSRO",str(year)+str(month).zfill(2),"Precise"])+".tar"
-        fu.fetch_RO(ecfspath,tarball,destination)
+        #tarball = "_".join(["GPSRO",str(year)+str(month).zfill(2),"Precise"])+".tar"
+        tarball = "_".join([ecfs["FPRE"],str(year)+str(month).zfill(2),ecfs["FEND"]])+"."+ecfs["FILETYPE"]
+        fu.fetch_RO(ecfs,tarball,destination)
+    elif obs == 'CRYO':
+        fu.fetch_CRYO(ecfs,year,month,destination)
     else:
+        ecfspath = ecfs["PATH"]
         print(f"No implementation for {ecfspath} just yet!")
         print("Currently doing ONLY CONV and RO observations")
         sys.exit()
@@ -51,25 +56,31 @@ def read_yaml(file_path):
         return yaml.safe_load(f)
 
 def fetch_data(yaml_args):
+    mdays = yaml_args["CL_ARGS"]["MDAYS"]
     year = yaml_args["CL_ARGS"]["YEAR"]
     month = yaml_args["CL_ARGS"]["MONTH"]
     obs = yaml_args["CL_ARGS"]["OBS"]
-    fpre = yaml_args["OBS"][obs]["FPRE"]
-    fend = yaml_args["OBS"][obs]["FEND"]
-    scratch =yaml_args["SCRATCH"]
-    obsdir = yaml_args["OBS"][obs]["OBSDIR"]
-    ecfspath = yaml_args["OBS"][obs]["ECFSPATH"]
-    localpath = yaml_args["OBS"][obs]["LOCALPATH"] #Use this path if defined
+    #fpre = yaml_args["OBS"][obs]["FPRE"]
+    #fend = yaml_args["OBS"][obs]["FEND"]
+    scratch =yaml_args["SCRATCH"] # was defined in main
+    #obsdir = yaml_args["OBS"][obs]["LOCOBSDIR"]
+    obsdir = yaml_args["OBS"][obs]["LOCALDIR"]#["OBSDIR"]
+    ecfs = yaml_args["OBS"][obs]["ECFS"]
+    fpre = ecfs["FPRE"]
+    fend = ecfs["FEND"]
+    localpath = yaml_args["OBS"][obs]["ECFS"]["LOCALPATH"] #Use this path if defined
     #check first if data already there
     destination = fu.create_destination(obsdir,year,month,scratch)
     files_present = fu.test_if_present(obs,year,month,fpre,destination)
     if not files_present:
         if len(localpath) != 0:
             print(f"Fetching data locally from: {localpath}")
-            fetch_local(obs,fpre,fend,localpath,year,month,destination)
+            #fetch_local(obs,fpre,fend,localpath,year,month,destination)
+            fetch_local(obs,ecfs,localpath,year,month,destination)
         else:
+            ecfspath = yaml_args["OBS"][obs]["ECFS"]["PATH"]
             print(f"Fetching data from ECFS: {ecfspath}")
-            fetch_ecfs(obs,ecfspath,year,month,destination)
+            fetch_ecfs(obs,ecfs,year,month,destination)
     else:
         print(f"Observations for {args.year}/{args.month} already copied!")
 
@@ -81,6 +92,8 @@ def main(args,parser):
     #Include the command line arguments
     yaml_args["CL_ARGS"] = {}
     yaml_args["CL_ARGS"]["OBS"] = args.obs
+    yaml_args["CL_ARGS"]["MDAYS"] = args.mdays
+    mdays = args.mdays
 
 
     # Check user's scratch directory and add it to yml options
@@ -91,6 +104,7 @@ def main(args,parser):
     if args.test:
         print("This is a test!")
         SCRATCH = os.path.join(SCRATCH,"tmp")
+    print(f"SCRATCH: {SCRATCH}")
     yaml_args["SCRATCH"] = SCRATCH
     
     #obsdir = yaml_args["OBS"][args.obs]
@@ -115,7 +129,7 @@ def main(args,parser):
             #The hhome path is only needed to read the progress.log file
             hh = os.path.join(HHOME,yaml_args["STREAMS"][st]["USER"],"hm_home")
             DTG = du.get_current_dtg(hh,st)
-            year,month = du.calc_year_month(DTG,mdays=15)
+            year,month = du.calc_year_month(DTG,mdays)
             if year != None and month != None:
                 print(f"Year and month to be fetch for {st} based on  progressMCI.log: {year} {month}")
                 yyyymm.append(year+"_"+month)
@@ -167,12 +181,16 @@ if __name__=='__main__':
                         type=str,
                         default="./streams.yaml",
                         required=False)
+    parser.add_argument('-mdays',metavar='Maximum number of days to check for data',
+                        type=float,
+                        default=15,
+                        required=False)
 
     args = parser.parse_args()
     #args.help =  parser.print_help()
     main(args,parser)
     #List of observation types
-    # CONV,RO
+    # CONV,RO, CRYO
     #If auto is not set, ask for params
     #Normally running it in automatic mode, so it goes through all the streams
     print("call_ecfs FINISHED")
