@@ -135,32 +135,36 @@ def fetch_RO(ecfs,tarball,destination):
     else:
         print(f"No data found for {year} and {month}")
 
-def fetch_OSISAF(obsdir,year,month,destination):
-    obsfile='carra_sst_iceconc_'
-    obspath = els_cmd.replace("els ec:","")
-    file_names = "".join([obsfile,str(year),str(month).zfill(2),"*"])
-    cmd = os.path.join(els_cmd,obsdir,"osisaf_v5",str(year),file_names)
-    #this is only for checking files are there
+def fetch_OSISAF(ecfs,year,month,destination):
+    '''
+    Fetch OSISAF data
+    '''
+    ecfspath = ecfs["PATH"]
+    print("Attempting to fetch OSISAF observations")
+    obspath = os.path.join(ecfspath,str(year))
     try:
-        ret = subprocess.check_output(cmd,shell=True)
+        fnames = "_".join([ecfs["FPRE"],str(year)+str(month).zfill(2)])+"*"
+        cmd = "els "+os.path.join(obspath,fnames)
+        ret = subprocess.check_output(cmd,shell=True) 
         ret_clean = ret.rstrip().decode('utf-8')
-        files_found = ret_clean.split("\n")
+        files_found = ret_clean.split("\n") 
         #add whole path to the file names:
-        files_found = [os.path.join(obspath,obsdir,"osisaf_v5",str(year),f) for f in files_found]
-        #print(f"Return from els: {files_found}")
+        files_found = [os.path.join(obspath,f) for f in files_found]
     except subprocess.CalledProcessError as err:
         print("Error in subprocess {}".format(err))
-    ndays = du.days_month(month,year)
-    if len(files_found) == ndays:
-        print(f"All {obsdir} files for {month}{year} present")
+        print(f"Directory {obspath}")
+        print(f"Files probably not found!")
+        sys.exit(1)
+    if len(files_found) != 0:
+        fnames = "_".join([ecfs["FPRE"],str(year)+str(month).zfill(2)])+"*"
+        cmd="ecp "+os.path.join(obspath,fnames)+' '+destination
+        print("DEBUG OSISAF command: %s"%cmd)
+        try:
+            ret=subprocess.check_output(cmd,shell=True)
+        except subprocess.CalledProcessError as err:
+            print(f'No data found for {cdir}: {err}')
     else:
-        print(f"WARNING: {obsdir} files for {month}{year} not complete. Only {len(files_found)} found")
-    cmd = cmd.replace("els","ecp")+' '+destination    
-    print("DEBUG obsoul command: %s"%cmd)
-    try:
-        ret=subprocess.check_output(cmd,shell=True)
-    except subprocess.CalledProcessError as err:
-        print(f'Error running {cmd}: {err}')
+        print(f"No data found for {year}")
 
 def create_destination(obsdir,year,month,scratch):
     '''
@@ -204,6 +208,9 @@ def test_if_present(obs,year,month,fpre,destination):
         fmin = 8 # Every 3 hours. du.days_month(month,year)
         obsYYMM = os.path.join(destination,fpre+"_"+str(year)+str(month).zfill(2))
     elif obs == "CRYO":
+        fmin = 28 # A file per day. TODO: calculate number of days in month here!
+        obsYYMM = os.path.join(destination,fpre+"_"+str(year)+str(month).zfill(2))
+    elif obs == "OSISAF":
         fmin = 28 # A file per day. TODO: calculate number of days in month here!
         obsYYMM = os.path.join(destination,fpre+"_"+str(year)+str(month).zfill(2))
     files_present=False

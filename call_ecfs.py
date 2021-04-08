@@ -34,6 +34,8 @@ def fetch_ecfs(obs,ecfs,year,month,destination):
         fu.fetch_RO(ecfs,tarball,destination)
     elif obs == 'CRYO':
         fu.fetch_CRYO(ecfs,year,month,destination)
+    elif obs == 'OSISAF':
+        fu.fetch_OSISAF(ecfs,year,month,destination)
     else:
         ecfspath = ecfs["PATH"]
         print(f"No implementation for {ecfspath} just yet!")

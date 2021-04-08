@@ -47,15 +47,15 @@ STREAMS:
     ACTIVE: True
 
 # These are the paths of the different types of observations
-# Currently these are only placeholders. Not using yet
 # If LOCALPATH defined, it will use the local data and
 # not the ECFSPATH
+# Some definitions are just place holders for the moment
 OBS:
   CONV:
     ECFS: 
       PATH: "ec:/rml/precise/obs/obsoul/locobs/v11jun20"
-      SUBDIR: "YYYY/MM"
-      NAMINGCONV: "YYYYMMDDHH"
+      SUBDIR: "{YYYY}/{MM}"
+      NAMINGCONV: "{YYYYMMDDHH}"
       FILETYPE: ""
       FPRE: "obsoul"
       FEND: ""
@@ -68,7 +68,7 @@ OBS:
     ECFS:
       PATH: "ec:/smoz/Observations/GNSSRO"
       SUBDIR: ""
-      NAMINGCONV: "YYYYMM"
+      NAMINGCONV: "{YYYYMM}"
       FILETYPE: "tar"
       FPRE: "GPSRO"
       FEND: "Precise"
@@ -83,7 +83,7 @@ OBS:
       SUBDIR: 
               - "CARRA_NE"
               - "CARRA_SW"
-      NAMINGCONV: "YYYYMMDDHH"
+      NAMINGCONV: "{YYYYMMDDHH}"
       FILETYPE: "dat"
       FPRE: "snow_cryo_5-10km"
       FEND: ""
@@ -94,3 +94,15 @@ OBS:
         SUBDIR:
                - "CARRA_NE"
                - "CARRA_SW"
+  OSISAF:
+    ECFS:
+      PATH: "ec:/nhx/CARRA/obs/OSISAF/osisaf_v5/"
+      SUBDIR: 
+      NAMINGCONV: "{YYYYMMDD}"
+      FILETYPE: "nc"
+      FPRE: "carra_sst_iceconc"
+      FEND: "v5"
+      LOCALPATH: ""
+    LOCALDIR:
+        OBSDIR: "OSISAF_data"
+        SUBDIR: ""
