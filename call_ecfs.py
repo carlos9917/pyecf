@@ -137,7 +137,6 @@ def main(args,parser):
                 yyyymm.append(year+"_"+month)
             else:
                 print(f"Doing nothing for {st}")
-                sys.exit(0)
         #remove all repeated values, so I dont request a month year more than once
         yyyymm = list(set(yyyymm))
         for ym in yyyymm:

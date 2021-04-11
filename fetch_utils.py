@@ -177,8 +177,13 @@ def create_destination(obsdir,year,month,scratch):
             os.makedirs(obspath)
     else:
         for cdir in obsdir["SUBDIR"]:
+            if cdir == "YYYY":
+                fdir = str(year)
+            else:
+                fdir = cdir
+            obspath = os.path.join(obspath,fdir)
             if not os.path.isdir(obspath):
-                os.makedirs(os.path.join(obspath,cdir))
+                os.makedirs(obspath) #os.path.join(obspath,fdir))
      
     #elif obsdir["OBSDIR"] == "ROdata":
     #    obspath=os.path.join(scratch,obsdir)
