@@ -105,4 +105,5 @@ OBS:
       LOCALPATH: ""
     LOCALDIR:
         OBSDIR: "OSISAF_data"
-        SUBDIR: ""
+        SUBDIR: 
+               - "YYYY"
