@@ -15,34 +15,6 @@ import numpy as np
 import fetch_utils as fu
 import date_utils as du
 
-def fetch_local(obs,ecfs,localpath,year,month,destination):
-    if obs == 'RO':
-        #fu.fetch_RO_local(localpath,fpre,fend,year,month,destination)
-        fu.fetch_RO_local(localpath,ecfs,year,month,destination)
-    else:
-        print(f"No local data available for {obs}!")
-
-def fetch_ecfs(obs,ecfs,year,month,destination):
-    '''
-    single call to ecfs according to DTG
-    '''
-    if obs == 'CONV':
-        fu.fetch_CONV(ecfs,year,month,destination)
-    elif obs == 'RO':
-        #tarball = "_".join(["GPSRO",str(year)+str(month).zfill(2),"Precise"])+".tar"
-        tarball = "_".join([ecfs["FPRE"],str(year)+str(month).zfill(2),ecfs["FEND"]])+"."+ecfs["FILETYPE"]
-        fu.fetch_RO(ecfs,tarball,destination)
-    elif obs == 'CRYO':
-        fu.fetch_CRYO(ecfs,year,month,destination)
-    elif obs == 'OSISAF':
-        fu.fetch_OSISAF(ecfs,year,month,destination)
-    else:
-        ecfspath = ecfs["PATH"]
-        print(f"No implementation for {ecfspath} just yet!")
-        print("Currently doing ONLY CONV and RO observations")
-        sys.exit()
-
-
 def run_comms(comms):
     for cmd in comms:
         print(f"Running: {cmd}")
@@ -57,34 +29,6 @@ def read_yaml(file_path):
     with open(file_path, "r") as f:
         return yaml.safe_load(f)
 
-def fetch_data(yaml_args):
-    mdays = yaml_args["CL_ARGS"]["MDAYS"]
-    year = yaml_args["CL_ARGS"]["YEAR"]
-    month = yaml_args["CL_ARGS"]["MONTH"]
-    obs = yaml_args["CL_ARGS"]["OBS"]
-    #fpre = yaml_args["OBS"][obs]["FPRE"]
-    #fend = yaml_args["OBS"][obs]["FEND"]
-    scratch =yaml_args["SCRATCH"] # was defined in main
-    #obsdir = yaml_args["OBS"][obs]["LOCOBSDIR"]
-    obsdir = yaml_args["OBS"][obs]["LOCALDIR"]#["OBSDIR"]
-    ecfs = yaml_args["OBS"][obs]["ECFS"]
-    fpre = ecfs["FPRE"]
-    fend = ecfs["FEND"]
-    localpath = yaml_args["OBS"][obs]["ECFS"]["LOCALPATH"] #Use this path if defined
-    #check first if data already there
-    destination = fu.create_destination(obsdir,year,month,scratch)
-    files_present = fu.test_if_present(obs,year,month,fpre,destination)
-    if not files_present:
-        if len(localpath) != 0:
-            print(f"Fetching data locally from: {localpath}")
-            #fetch_local(obs,fpre,fend,localpath,year,month,destination)
-            fetch_local(obs,ecfs,localpath,year,month,destination)
-        else:
-            ecfspath = yaml_args["OBS"][obs]["ECFS"]["PATH"]
-            print(f"Fetching data from ECFS: {ecfspath}")
-            fetch_ecfs(obs,ecfs,year,month,destination)
-    else:
-        print(f"Observations for {args.year}/{args.month} already copied!")
 
 def main(args,parser):
     HHOME = "/ws/home/ms/dk"
@@ -121,7 +65,7 @@ def main(args,parser):
         else:
             yaml_args["CL_ARGS"]["YEAR"] = args.year
             yaml_args["CL_ARGS"]["MONTH"] = args.month
-            fetch_data(yaml_args)
+            fu.fetch_data(yaml_args)
     else:
         #streams = [st for st in yaml_args["STREAMS"].keys()]
         streams = [st for st in yaml_args["STREAMS"].keys() if yaml_args["STREAMS"][st]["ACTIVE"]]
@@ -146,7 +90,7 @@ def main(args,parser):
                 print(f"From progressMCI.log: need to fetch {args.year} {args.month}")
                 yaml_args["CL_ARGS"]["YEAR"] = args.year
                 yaml_args["CL_ARGS"]["MONTH"] = args.month
-                fetch_data(yaml_args)
+                fu.fetch_data(yaml_args)
             else:
                print("Something went wrong reading the year or month from progressMCI.log")
                print(f"year: {args.year}, month: {args.month}")
@@ -189,9 +133,9 @@ if __name__=='__main__':
 
     args = parser.parse_args()
     #args.help =  parser.print_help()
-    main(args,parser)
     #List of observation types
     # CONV,RO, CRYO
     #If auto is not set, ask for params
     #Normally running it in automatic mode, so it goes through all the streams
+    main(args,parser)
     print("call_ecfs FINISHED")
