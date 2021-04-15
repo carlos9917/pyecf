@@ -77,24 +77,24 @@ def main(args,parser):
             DTG = du.get_current_dtg(hh,st)
             year,month = du.calc_year_month(DTG,mdays)
             if year != None and month != None:
-                print(f"Year and month to be fetch for {st} based on  progressMCI.log: {year} {month}")
+                print(f"Adding {st} to fetch list: {year} {month}")
                 yyyymm.append(year+"_"+month)
             else:
                 print(f"Doing nothing for {st}")
         #remove all repeated values, so I dont request a month year more than once
         yyyymm = list(set(yyyymm))
+        print(">>>>> Starting fetch calls <<<<< ")
         for ym in yyyymm:
             args.year = int(ym.split("_")[0])
             args.month = int(ym.split("_")[1])
             if args.year != None and args.month != None:
-                print(f"From progressMCI.log: need to fetch {args.year} {args.month}")
+                print(f"Fetching {args.year} {args.month}")
                 yaml_args["CL_ARGS"]["YEAR"] = args.year
                 yaml_args["CL_ARGS"]["MONTH"] = args.month
                 fu.fetch_data(yaml_args)
             else:
-               print("Something went wrong reading the year or month from progressMCI.log")
-               print(f"year: {args.year}, month: {args.month}")
-
+               print(f"Something went wrong for year: {args.year}, month: {args.month}")
+    print(">>>> Fetch done <<<<")
 if __name__=='__main__':
     import argparse
     from argparse import RawTextHelpFormatter
