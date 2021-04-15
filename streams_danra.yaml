@@ -1,0 +1,72 @@
+# List of streams, indicating if they are active or not
+STREAMS:
+  dkrea198909:
+    BEG_DATE: 1989090100
+    END_DATE: 1994090123
+    USER: nhe
+    ACTIVE: True
+  dkrea199309:
+    BEG_DATE: 1993090100
+    END_DATE: 1998083123
+    USER: nhd
+    ACTIVE: False
+  dkrea199709:
+    BEG_DATE: 1997090100
+    END_DATE: 2002090123
+    USER: nhd
+    ACTIVE: False
+  dkrea200109:
+    BEG_DATE: 2001090100
+    END_DATE: 2006090123
+    USER: nhd
+    ACTIVE: False
+  dkrea200509:
+    BEG_DATE: 2005090100
+    END_DATE: 2010090121
+    USER: nhd
+    ACTIVE: False
+  dkrea200909:
+    BEG_DATE: 2009090100
+    END_DATE: 2014090121
+    USER: nhe
+    ACTIVE: False
+  dkrea201309:
+    BEG_DATE: 2013090100
+    END_DATE: 2017090121
+    USER: nhe
+    ACTIVE: False
+  dkrea201609:
+    BEG_DATE: 2016090100
+    END_DATE: 2020010123
+    USER: nhe
+    ACTIVE: True
+  dkrea_nrt:
+    BEG_DATE: 2018120100
+    END_DATE: 2023123123
+    USER: nhe
+    ACTIVE: True
+
+# These are the paths of the different types of observations
+# Currently these are only placeholders. Not using yet
+# If LOCALPATH defined, it will use the local data and
+# not the ECFSPATH
+OBS:
+  CONV:
+    ECFSPATH: "ec:/rml/precise/obs/obsoul/locobs/v11jun20"
+    LOCALPATH: ""
+    OBSDIR: "LocalObsdata"
+    SUBDIR: "YYYY/MM"
+    FILETYPE: "SINGLE"
+    NAMINGCONV: "YYYYMMDDHH"
+    FPRE: "obsoul"
+    FEND: ""
+  RO:
+    ECFSPATH: "ec:/smoz/Observations/GNSSRO"
+    LOCALPATH: "/ws/scratch/ms/dk/nhb"
+    OBSDIR: "ROdata"
+    SUBDIR: ""
+    FILETYPE: "TAR"
+    NAMINGCONV: "YYYYMM"
+    FPRE: "GPSRO"
+    FEND: "Precise.tar"
+
