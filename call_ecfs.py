@@ -51,6 +51,7 @@ def main(args,parser):
         print("This is a test!")
         SCRATCH = os.path.join(SCRATCH,"tmp")
     print(f"SCRATCH: {SCRATCH}")
+    print(f"Minimum number of days to fetch data: {mdays}")
     yaml_args["SCRATCH"] = SCRATCH
     
     #obsdir = yaml_args["OBS"][args.obs]
@@ -69,7 +70,8 @@ def main(args,parser):
     else:
         #streams = [st for st in yaml_args["STREAMS"].keys()]
         streams = [st for st in yaml_args["STREAMS"].keys() if yaml_args["STREAMS"][st]["ACTIVE"]]
-        print(f"Active streams: {streams}")
+        print("Active streams:")
+        print(*streams,sep="\n")
         yyyymm = []
         for st in streams:
             #The hhome path is only needed to read the progress.log file
@@ -138,4 +140,4 @@ if __name__=='__main__':
     #If auto is not set, ask for params
     #Normally running it in automatic mode, so it goes through all the streams
     main(args,parser)
-    print("call_ecfs FINISHED")
+    #print("FINISHED")
