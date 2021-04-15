@@ -1,51 +1,35 @@
 # List of streams, indicating if they are active or not
 STREAMS:
-  dkrea198909:
+  carra_NE_4:
     BEG_DATE: 1989090100
-    END_DATE: 1994090123
-    USER: nhe
-    ACTIVE: False
-  dkrea199309:
+    END_DATE: 1992083021
+    USER: nhx
+    ACTIVE: True
+  carra_NE_5:
+    BEG_DATE: 1991090100
+    END_DATE: 1994083021
+    USER: nhx
+    ACTIVE: True
+  carra_NE_6:
     BEG_DATE: 1993090100
-    END_DATE: 1998083123
-    USER: nhd
-    ACTIVE: False
-  dkrea199709:
-    BEG_DATE: 1997090100
-    END_DATE: 2002090123
-    USER: nhd
-    ACTIVE: False
-  dkrea200109:
-    BEG_DATE: 2001090100
-    END_DATE: 2006090123
-    USER: nhd
-    ACTIVE: False
-  dkrea200509:
-    BEG_DATE: 2005090100
-    END_DATE: 2010090121
-    USER: nhd
-    ACTIVE: False
-  dkrea200909:
-    BEG_DATE: 2009090100
-    END_DATE: 2014090121
-    USER: nhe
-    ACTIVE: False
-  dkrea201309:
-    BEG_DATE: 2013090100
-    END_DATE: 2017090121
-    USER: nhe
-    ACTIVE: False
-  dkrea201609:
-    BEG_DATE: 2016090100
-    END_DATE: 2020010123
-    USER: nhe
+    END_DATE: 1997063021
+    USER: nhx
     ACTIVE: True
-  dkrea_nrt:
-    BEG_DATE: 2018120100
-    END_DATE: 2023123123
-    USER: nhe
+  carra_IGB_4:
+    BEG_DATE: 1989090100
+    END_DATE: 1992083021
+    USER: nhx
     ACTIVE: True
-
+  carra_IGB_5:
+    BEG_DATE: 1991090100
+    END_DATE: 1994083021
+    USER: nhx
+    ACTIVE: True
+  carra_IGB_6:
+    BEG_DATE: 1993090100
+    END_DATE: 1997063021
+    USER: nhx
+    ACTIVE: True
 # These are the paths of the different types of observations
 # If LOCALPATH defined, it will use the local data and
 # not the ECFSPATH
@@ -60,7 +44,6 @@ OBS:
       FPRE: "obsoul"
       FEND: ""
       LOCALPATH: ""
-    #LOCOBSDIR: "LocalObsdata"
     LOCALDIR:
         OBSDIR: "LocalObsdata"
         SUBDIR: ""
@@ -72,8 +55,7 @@ OBS:
       FILETYPE: "tar"
       FPRE: "GPSRO"
       FEND: "Precise"
-      LOCALPATH: "/ws/scratch/ms/dk/nhb"
-    #LOCOBSDIR: "ROdata"
+      LOCALPATH: ""
     LOCALDIR:
         OBSDIR: "ROdata"
         SUBDIR: ""
@@ -88,7 +70,6 @@ OBS:
       FPRE: "snow_cryo_5-10km"
       FEND: ""
       LOCALPATH: ""
-    #LOCOBSDIR: "SATSNOWdata"
     LOCALDIR:
         OBSDIR: "SATSNOWdata"
         SUBDIR:

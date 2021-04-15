@@ -10,7 +10,7 @@ from datetime import timedelta
 
 #hhome = "/ws/home/ms/dk/nhx/hm_home"
 
-def calc_year_month(cdate,mdays=15):
+def calc_year_month(cdate,mdays):
     domonth = None
     doyear = None
     current = datetime.strptime(cdate,"%Y%m%d%H")

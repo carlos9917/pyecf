@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
-today=`date +'%Y%m%d_%H%M%S'`
-echo Fetching observations on $today
+module load python3
+
 #Usage
 #
 # Type python3 ./call_ecfs.py for full options
@@ -20,13 +20,15 @@ echo Fetching observations on $today
 #python3 ./call_ecfs.py -auto -obs CONV -test
 #python3 ./call_ecfs.py -auto -obs RO -test
 #python3 ./call_ecfs.py -month 8 -year 2020 -obs RO 
-#module avail
-module load python3
-cd /home/ms/dk/nhe/scr/pyecf
 
-python3 ./call_ecfs.py -auto -obs CONV
-python3 ./call_ecfs.py -auto -obs RO
 #python3 ./call_ecfs.py -auto -obs CONV -test
 #python3 ./call_ecfs.py -auto -obs RO -test -mdays 25
 #python3 ./call_ecfs.py -auto -obs CRYO -test -mdays 25
-#python3 ./call_ecfs.py -auto -obs OSISAF -test -mdays 25
+MDAYS=30
+
+python3 ./call_ecfs.py -auto -obs CONV -yfile streams_carra.yaml -test -mdays $MDAYS
+python3 ./call_ecfs.py -auto -obs CRYO -yfile streams_carra.yaml -test -mdays $MDAYS
+python3 ./call_ecfs.py -auto -obs RO -yfile streams_carra.yaml -test -mdays $MDAYS
+python3 ./call_ecfs.py -auto -obs OSISAF -yfile streams_carra.yaml -test -mdays $MDAYS
+#python3 ./call_ecfs.py -auto -obs CRYO -yfile streams_carra.yaml -test -mdays 20
+#python3 ./call_ecfs.py -auto -obs RO -yfile streams_carra.yaml -test
