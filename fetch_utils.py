@@ -30,7 +30,7 @@ def fetch_ecfs(obs,ecfs,year,month,destination):
     else:
         ecfspath = ecfs["PATH"]
         print(f"No implementation for {ecfspath} just yet!")
-        print("Currently doing ONLY CONV and RO observations")
+        print("Currently doing ONLY CONV, RO, CRYO and OSISAF observations")
         sys.exit()
 
 
@@ -61,7 +61,8 @@ def fetch_CRYO(ecfs,year,month,destination):
         print("Error in subprocess {}".format(err))
         print(f"Directory {obspath}")
         print(f"Files probably not found!")
-        sys.exit(1)
+        return
+        #sys.exit(1)
     if len(files_found) != 0:
         fnames = "_".join([ecfs["FPRE"],str(year)+str(month).zfill(2)])+"*"
         cmd="ecp "+os.path.join(obspath,fnames)+' '+destination
@@ -117,7 +118,8 @@ def fetch_CONV(ecfs,year,month,destination):
         print("Error in subprocess {}".format(err))
         print(f"Directory {obspath}")
         print(f"Files probably not found!")
-        sys.exit(1)
+        #sys.exit(1)
+        return
        
     if len(files_found) != 0:
         cmd="ecp "+os.path.join(obspath,"*")+' '+destination
@@ -149,7 +151,8 @@ def fetch_RO(ecfs,tarball,destination):
         print("Error in subprocess {}".format(err))
         print(f"Directory {obspath}")
         print(f"Files probably not found!")
-        sys.exit(1)
+        return
+        #sys.exit(1)
        
     if len(files_found) != 0:
         cmd="ecp "+obspath+' '+destination
@@ -188,7 +191,8 @@ def fetch_OSISAF(ecfs,year,month,destination):
         print("Error in subprocess {}".format(err))
         print(f"Directory {obspath}")
         print(f"Files probably not found!")
-        sys.exit(1)
+        return
+        #sys.exit(1)
     if len(files_found) != 0:
         fnames = "_".join([ecfs["FPRE"],str(year)+str(month).zfill(2)])+"*"
         cmd="ecp "+os.path.join(obspath,fnames)+' '+destination

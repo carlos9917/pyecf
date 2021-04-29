@@ -1,11 +1,13 @@
-#!/bin/sh
+#!/bin/ksh
+#using this script with nhe
+
+export PATH=/usr/local/bin:$PATH
+. ~/.profile
+. ~/.kshrc
+$@ 
 
 today=`date +'%Y%m%d_%H%M%S'`
 echo Fetching observations on $today
-#Usage
-#
-# Type python3 ./call_ecfs.py for full options
-
 # Examples:
 # 
 # python3 ./call_ecfs.py -auto -obs OBSTYPE
@@ -17,16 +19,8 @@ echo Fetching observations on $today
 # Add -test option to test in local $SCRATCH/tmp directory (useful if testing in user other than running streams)
 
 
-#python3 ./call_ecfs.py -auto -obs CONV -test
-#python3 ./call_ecfs.py -auto -obs RO -test
-#python3 ./call_ecfs.py -month 8 -year 2020 -obs RO 
-#module avail
 module load python3
+#module list
 cd /home/ms/dk/nhe/scr/pyecf
-
-python3 ./call_ecfs.py -auto -obs CONV
-python3 ./call_ecfs.py -auto -obs RO
-#python3 ./call_ecfs.py -auto -obs CONV -test
-#python3 ./call_ecfs.py -auto -obs RO -test -mdays 25
-#python3 ./call_ecfs.py -auto -obs CRYO -test -mdays 25
-#python3 ./call_ecfs.py -auto -obs OSISAF -test -mdays 25
+python3 ./call_ecfs.py -auto -obs CONV -yfile ./streams_danra.yaml
+python3 ./call_ecfs.py -auto -obs RO -yfile ./streams_danra.yaml
