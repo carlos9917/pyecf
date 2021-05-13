@@ -60,7 +60,6 @@ OBS:
       FPRE: "obsoul"
       FEND: ""
       LOCALPATH: ""
-    #LOCOBSDIR: "LocalObsdata"
     LOCALDIR:
         OBSDIR: "LocalObsdata"
         SUBDIR: ""
@@ -73,7 +72,6 @@ OBS:
       FPRE: "GPSRO"
       FEND: "Precise"
       LOCALPATH: "/ws/scratch/ms/dk/nhb"
-    #LOCOBSDIR: "ROdata"
     LOCALDIR:
         OBSDIR: "ROdata"
         SUBDIR: ""
@@ -88,7 +86,6 @@ OBS:
       FPRE: "snow_cryo_5-10km"
       FEND: ""
       LOCALPATH: ""
-    #LOCOBSDIR: "SATSNOWdata"
     LOCALDIR:
         OBSDIR: "SATSNOWdata"
         SUBDIR:
