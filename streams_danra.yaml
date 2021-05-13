@@ -8,8 +8,8 @@ STREAMS:
   dkrea199309:
     BEG_DATE: 1993090100
     END_DATE: 1998083123
-    USER: nhd
-    ACTIVE: False
+    USER: nhe
+    ACTIVE: True
   dkrea199709:
     BEG_DATE: 1997090100
     END_DATE: 2002090123

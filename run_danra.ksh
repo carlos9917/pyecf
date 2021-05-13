@@ -19,8 +19,10 @@ echo Fetching observations on $today
 # Add -test option to test in local $SCRATCH/tmp directory (useful if testing in user other than running streams)
 
 
+echo ">>>> Running call_ecfs.py <<<<"
 module load python3
 #module list
 cd /home/ms/dk/nhe/scr/pyecf
 python3 ./call_ecfs.py -auto -obs CONV -yfile ./streams_danra.yaml
 python3 ./call_ecfs.py -auto -obs RO -yfile ./streams_danra.yaml
+echo ">>>> Finished <<<<"
