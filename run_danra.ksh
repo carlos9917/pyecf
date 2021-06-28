@@ -24,5 +24,6 @@ module load python3
 #module list
 cd /home/ms/dk/nhe/scr/pyecf
 python3 ./call_ecfs.py -auto -obs CONV -yfile ./streams_danra.yaml
-python3 ./call_ecfs.py -auto -obs RO -yfile ./streams_danra.yaml
+#Turned this off on 20210518 due to lack of permissions to write in the ROdata path, which now points to nhz
+#python3 ./call_ecfs.py -auto -obs RO -yfile ./streams_danra.yaml
 echo ">>>> Finished <<<<"
