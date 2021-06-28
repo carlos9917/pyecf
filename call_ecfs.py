@@ -73,10 +73,14 @@ def main(args,parser):
         print("Active streams:")
         print(*streams,sep="\n")
         yyyymm = []
+        #Go over all active streams.
         for st in streams:
             #The hhome path is only needed to read the progress.log file
             hh = os.path.join(HHOME,yaml_args["STREAMS"][st]["USER"],"hm_home")
+            #Check current DTG of simulation
             DTG = du.get_current_dtg(hh,st)
+            #Calculate year/month to be copie, if mdays too close to 
+            # end of the month
             year,month = du.calc_year_month(DTG,mdays)
             if year != None and month != None:
                 print(f"Adding {st} to fetch list: {year} {month}")
@@ -128,6 +132,8 @@ if __name__=='__main__':
                         type=str,
                         default="./streams.yaml",
                         required=False)
+    #This variable controls how many days to wait until fetching data
+    # (ie, how many days left until the end of the current month being simulated)
     parser.add_argument('-mdays',metavar='Maximum number of days to check for data',
                         type=float,
                         default=15,

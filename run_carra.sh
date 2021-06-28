@@ -26,9 +26,15 @@ module load python3
 #python3 ./call_ecfs.py -auto -obs CRYO -test -mdays 25
 MDAYS=30
 
-python3 ./call_ecfs.py -auto -obs CONV -yfile streams_carra.yaml -test -mdays $MDAYS
-python3 ./call_ecfs.py -auto -obs CRYO -yfile streams_carra.yaml -test -mdays $MDAYS
-python3 ./call_ecfs.py -auto -obs RO -yfile streams_carra.yaml -test -mdays $MDAYS
-python3 ./call_ecfs.py -auto -obs OSISAF -yfile streams_carra.yaml -test -mdays $MDAYS
+#Calls for carra_pan
+
+python3 ./call_ecfs.py -auto -obs IASI -yfile streams_pan.yaml 
+python3 ./call_ecfs.py -auto -obs SCATT -yfile streams_pan.yaml
+python3 ./call_ecfs.py -auto -obs CONV -yfile streams_pan.yaml
+
+#python3 ./call_ecfs.py -auto -obs CONV -yfile streams_carra.yaml -test -mdays $MDAYS
+#python3 ./call_ecfs.py -auto -obs CRYO -yfile streams_carra.yaml -test -mdays $MDAYS
+#python3 ./call_ecfs.py -auto -obs RO -yfile streams_carra.yaml -test -mdays $MDAYS
+#python3 ./call_ecfs.py -auto -obs OSISAF -yfile streams_carra.yaml -test -mdays $MDAYS
 #python3 ./call_ecfs.py -auto -obs CRYO -yfile streams_carra.yaml -test -mdays 20
 #python3 ./call_ecfs.py -auto -obs RO -yfile streams_carra.yaml -test

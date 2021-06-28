@@ -27,6 +27,12 @@ def fetch_ecfs(obs,ecfs,year,month,destination):
         fetch_CRYO(ecfs,year,month,destination)
     elif obs == 'OSISAF':
         fetch_OSISAF(ecfs,year,month,destination)
+    elif obs == 'SCATT':
+        import SCATTdata
+        SCATTdata.fetch_SCATT(ecfs,year,month,destination)
+    elif obs == 'IASI':
+        import IASIdata
+        IASIdata.fetch_IASI(ecfs,year,month,destination)
     else:
         ecfspath = ecfs["PATH"]
         print(f"No implementation for {ecfspath} just yet!")
@@ -219,6 +225,8 @@ def create_destination(obsdir,year,month,scratch):
         for cdir in obsdir["SUBDIR"]:
             if cdir == "YYYY":
                 fdir = str(year)
+            elif cdir == "YYYY/MM":
+                fdir = str(year)+"/"+str(month).zfill(2)
             else:
                 fdir = cdir
             obspath = os.path.join(obspath_base,fdir)
@@ -246,7 +254,8 @@ def fetch_data(yaml_args):
     scratch = yaml_args["SCRATCH"]
 
     print(f"Checking if {obs} data for {year}/{month} is already there")
-    fmin = { "CONV": 200, "RO": 8, "CRYO": 28, "OSISAF": 28}
+    fmin = { "CONV": 200, "RO": 8, "CRYO": 28, "OSISAF": 28,
+             "SCATT":1, "IASI":120}
     destination = create_destination(obsdir,year,month,scratch)
     #use this path instead of the ECFS path if it is defined
     localpath = yaml_args["OBS"][obs]["ECFS"]["LOCALPATH"]
