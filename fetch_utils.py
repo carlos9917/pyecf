@@ -103,10 +103,12 @@ def fetch_RO_local(localpath,ecfs,year,month,destination):
     else:
         print(f"{obspath} does not exist!")
 
-def fetch_CONV(ecfs,year,month,destination):
+def fetch_CONV(ecfs,year,month,destination,cp_com="ecfsdir"):
     '''
     This copies all conventional observations for a given month and year
     destination is a string
+    NOTE: I use ecp ONLY in some special cases (ie for DANRA).
+    Normally I use the ecfsdir command (ie, for CARRA)
     '''
     ecfspath = ecfs["PATH"]
     print("Attempting to fetch CONV observations")
@@ -128,14 +130,28 @@ def fetch_CONV(ecfs,year,month,destination):
         return
        
     if len(files_found) != 0:
-        cmd="ecp "+os.path.join(obspath,"*")+' '+destination
+        if cp_com == "ecp":
+            cmd=cp_com+" "+os.path.join(obspath,"*")+' '+destination
+        elif cp_com == "ecfsdir":
+            #for ecfsdir, first copy to local yyyymm, then move to location
+            cmd=cp_com+" "+obspath+' '+os.path.join(destination,str(year)+str(month).zfill(2))
         print("DEBUG obsoul command: %s"%cmd)
         try:
             ret=subprocess.check_output(cmd,shell=True)
         except subprocess.CalledProcessError as err:
             print('obsoul monthly file not found %s'%err)
+        #move data if command was ecfsdir
+        if cp_com == "ecfsdir":
+            cmd="mv "+os.path.join(destination,str(year)+str(month).zfill(2),"obs*")+' '+destination
+            print(f"Moving data: {cmd}")
+            try:
+                ret=subprocess.check_output(cmd,shell=True)
+                os.rmdir(os.path.join(destination,str(year)+str(month).zfill(2)))
+            except subprocess.CalledProcessError as err:
+                print(f'{cmd} failed with error {err}')
     else:
         print(f"No data found for {year} and {month}")
+   
 
 def fetch_RO(ecfs,tarball,destination):
     '''

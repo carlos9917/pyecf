@@ -24,13 +24,18 @@ module load python3
 #python3 ./call_ecfs.py -auto -obs CONV -test
 #python3 ./call_ecfs.py -auto -obs RO -test -mdays 25
 #python3 ./call_ecfs.py -auto -obs CRYO -test -mdays 25
-MDAYS=30
+MDAYS=30 #if I want to wait longer before checking for data
+#Month and year for specifying arguments below
+MM=2
+YYYY=2018
 
-#Calls for carra_pan
-
+#Calls for carra_pan.
+cd /home/ms/dk/nhx/scr/check_transfer_data/pyecf
 python3 ./call_ecfs.py -auto -obs IASI -yfile streams_pan.yaml 
 python3 ./call_ecfs.py -auto -obs SCATT -yfile streams_pan.yaml
 python3 ./call_ecfs.py -auto -obs CONV -yfile streams_pan.yaml
+
+#python3 ./call_ecfs.py -obs CONV -yfile streams_pan.yaml -month $MM -year $YYYY
 
 #python3 ./call_ecfs.py -auto -obs CONV -yfile streams_carra.yaml -test -mdays $MDAYS
 #python3 ./call_ecfs.py -auto -obs CRYO -yfile streams_carra.yaml -test -mdays $MDAYS
