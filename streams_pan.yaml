@@ -1,0 +1,50 @@
+# List of streams, indicating if they are active or not
+STREAMS:
+  carra_pan:
+    BEG_DATE: 2017090100
+    END_DATE: 2018083121
+    USER: nhx
+    ACTIVE: True
+# These are the paths of the different types of observations
+# If LOCALPATH defined, it will use the local data and
+# not the ECFSPATH
+# Some definitions are just place holders for the moment
+OBS:
+  CONV:
+    ECFS: 
+      PATH: "ec:/nhx/CARRA/obs/CONV/obsoul_update"
+      SUBDIR: "{YYYY}/{MM}"
+      NAMINGCONV: "{YYYYMMDDHH}"
+      FILETYPE: ""
+      FPRE: "obsoul"
+      FEND: ""
+      LOCALPATH: ""
+    LOCALDIR:
+      OBSDIR: "LocalObsdata"
+      SUBDIR: ""
+  IASI:
+    ECFS: 
+      PATH: "ec:/nhx/CARRA/obs/IASI_DATA"
+      SUBDIR: "{YYYY}/{MM}"
+      NAMINGCONV: "{YYYYMMDDHH}"
+      FILETYPE: ""
+      FPRE: "iasi-filtered"
+      FEND: "bufr"
+      LOCALPATH: ""
+    LOCALDIR:
+      OBSDIR: "IASI_DATA"
+      SUBDIR: 
+             - "YYYY"
+  SCATT:
+    ECFS: 
+      PATH: "ec:/nhx/CARRA/obs/SCATT"
+      SUBDIR: "{YYYY}/{MM}"
+      NAMINGCONV: "{YYYYMMDDHH}"
+      FILETYPE: ""
+      FPRE: ""
+      FEND: "tar"
+      LOCALPATH: ""
+    LOCALDIR:
+      OBSDIR: "SCATTdata"
+      SUBDIR: 
+             - "YYYY/MM"
