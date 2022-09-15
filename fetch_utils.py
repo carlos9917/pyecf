@@ -27,6 +27,12 @@ def fetch_ecfs(obs,ecfs,year,month,destination):
         fetch_CRYO(ecfs,year,month,destination)
     elif obs == 'OSISAF':
         fetch_OSISAF(ecfs,year,month,destination)
+    elif obs == 'SCATT':
+        import SCATTdata
+        SCATTdata.fetch_SCATT(ecfs,year,month,destination)
+    elif obs == 'IASI':
+        import IASIdata
+        IASIdata.fetch_IASI(ecfs,year,month,destination)
     else:
         ecfspath = ecfs["PATH"]
         print(f"No implementation for {ecfspath} just yet!")
@@ -97,10 +103,12 @@ def fetch_RO_local(localpath,ecfs,year,month,destination):
     else:
         print(f"{obspath} does not exist!")
 
-def fetch_CONV(ecfs,year,month,destination):
+def fetch_CONV(ecfs,year,month,destination,cp_com="ecfsdir"):
     '''
     This copies all conventional observations for a given month and year
     destination is a string
+    NOTE: I use ecp ONLY in some special cases (ie for DANRA).
+    Normally I use the ecfsdir command (ie, for CARRA)
     '''
     ecfspath = ecfs["PATH"]
     print("Attempting to fetch CONV observations")
@@ -122,14 +130,28 @@ def fetch_CONV(ecfs,year,month,destination):
         return
        
     if len(files_found) != 0:
-        cmd="ecp "+os.path.join(obspath,"*")+' '+destination
+        if cp_com == "ecp":
+            cmd=cp_com+" "+os.path.join(obspath,"*")+' '+destination
+        elif cp_com == "ecfsdir":
+            #for ecfsdir, first copy to local yyyymm, then move to location
+            cmd=cp_com+" "+obspath+' '+os.path.join(destination,str(year)+str(month).zfill(2))
         print("DEBUG obsoul command: %s"%cmd)
         try:
             ret=subprocess.check_output(cmd,shell=True)
         except subprocess.CalledProcessError as err:
             print('obsoul monthly file not found %s'%err)
+        #move data if command was ecfsdir
+        if cp_com == "ecfsdir":
+            cmd="mv "+os.path.join(destination,str(year)+str(month).zfill(2),"obs*")+' '+destination
+            print(f"Moving data: {cmd}")
+            try:
+                ret=subprocess.check_output(cmd,shell=True)
+                os.rmdir(os.path.join(destination,str(year)+str(month).zfill(2)))
+            except subprocess.CalledProcessError as err:
+                print(f'{cmd} failed with error {err}')
     else:
         print(f"No data found for {year} and {month}")
+   
 
 def fetch_RO(ecfs,tarball,destination):
     '''
@@ -219,6 +241,8 @@ def create_destination(obsdir,year,month,scratch):
         for cdir in obsdir["SUBDIR"]:
             if cdir == "YYYY":
                 fdir = str(year)
+            elif cdir == "YYYY/MM":
+                fdir = str(year)+"/"+str(month).zfill(2)
             else:
                 fdir = cdir
             obspath = os.path.join(obspath_base,fdir)
@@ -246,7 +270,8 @@ def fetch_data(yaml_args):
     scratch = yaml_args["SCRATCH"]
 
     print(f"Checking if {obs} data for {year}/{month} is already there")
-    fmin = { "CONV": 200, "RO": 8, "CRYO": 28, "OSISAF": 28}
+    fmin = { "CONV": 200, "RO": 8, "CRYO": 28, "OSISAF": 28,
+             "SCATT":1, "IASI":120}
     destination = create_destination(obsdir,year,month,scratch)
     #use this path instead of the ECFS path if it is defined
     localpath = yaml_args["OBS"][obs]["ECFS"]["LOCALPATH"]
