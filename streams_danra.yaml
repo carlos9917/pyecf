@@ -14,7 +14,7 @@ STREAMS:
     BEG_DATE: 1997090100
     END_DATE: 2002090123
     USER: nhd
-    ACTIVE: False
+    ACTIVE: True
   dkrea200109:
     BEG_DATE: 2001090100
     END_DATE: 2006090123
@@ -24,12 +24,12 @@ STREAMS:
     BEG_DATE: 2005090100
     END_DATE: 2010090121
     USER: nhd
-    ACTIVE: False
+    ACTIVE: True
   dkrea200909:
     BEG_DATE: 2009090100
     END_DATE: 2014090121
-    USER: nhe
-    ACTIVE: False
+    USER: nhd
+    ACTIVE: True
   dkrea201309:
     BEG_DATE: 2013090100
     END_DATE: 2017090121
@@ -43,7 +43,7 @@ STREAMS:
   dkrea_nrt:
     BEG_DATE: 2018120100
     END_DATE: 2023123123
-    USER: nhe
+    USER: nhd
     ACTIVE: True
 # These are the paths of the different types of observations
 # If LOCALPATH defined, it will use the local data and
@@ -70,7 +70,7 @@ OBS:
       FILETYPE: "tar"
       FPRE: "GPSRO"
       FEND: "Precise"
-      LOCALPATH: ""
+      LOCALPATH: "/ws/scratch/ms/dk/nhb"
     LOCALDIR:
         OBSDIR: "ROdata"
         SUBDIR: ""
