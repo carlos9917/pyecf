@@ -33,6 +33,12 @@ def fetch_ecfs(obs,ecfs,year,month,destination):
     elif obs == 'IASI':
         import IASIdata
         IASIdata.fetch_IASI(ecfs,year,month,destination)
+    elif obs == 'SICE':
+        import SICEdata
+        SICEdata.fetch_SICE(ecfs,year,month,destination)
+    elif obs == 'GEUS':
+        import GEUSdata
+        GEUSdata.fetch_GEUS(ecfs,year,destination)
     else:
         ecfspath = ecfs["PATH"]
         print(f"No implementation for {ecfspath} just yet!")
@@ -270,8 +276,11 @@ def fetch_data(yaml_args):
     scratch = yaml_args["SCRATCH"]
 
     print(f"Checking if {obs} data for {year}/{month} is already there")
+    #note, this is the min number for files, for those with 28 it is really the number of days
+    #todo: define this as number of days in month
+    #for geus, those are julian days, for a few months of the year
     fmin = { "CONV": 200, "RO": 8, "CRYO": 28, "OSISAF": 28,
-             "SCATT":1, "IASI":120}
+            "SCATT":1, "IASI":120, "SICE":28,"GEUS":240}
     destination = create_destination(obsdir,year,month,scratch)
     #use this path instead of the ECFS path if it is defined
     localpath = yaml_args["OBS"][obs]["ECFS"]["LOCALPATH"]

@@ -8,9 +8,23 @@ def fetch_IASI(ecfs,year,month,destination):
     if date > 20204 use IASI_DATA2
     '''
     ecfspath = ecfs["PATH"]
-    print("Attempting to fetch IASI observations")
+    mm=str(month).zfill(2)
+    yyyy=str(year)
+    if int(year) == 2020 and month >= 4:
+        subdir = "IASI_DATA2"
+        ecfspath = os.path.join(ecfspath,subdir)
+    elif int(year) == 2021:
+        subdir = "IASI_DATA2"
+        ecfspath = os.path.join(ecfspath,subdir)
+    elif int(year) >= 2022:
+        subdir = "IASI_DATA3"
+        ecfspath = os.path.join(ecfspath,subdir,yyyy,mm)
+    else:
+        subdir = "IASI_DATA"
+        ecfspath = os.path.join(ecfspath,subdir)
+    print(f"Attempting to fetch IASI observations from {ecfspath}")
     obspath = ecfspath
-    fnames = "".join(["*",str(year)+str(month).zfill(2),"*"])
+    fnames = "".join(["*",yyyy+mm,"*"])
     try:
         cmd = "els "+os.path.join(obspath,fnames)
         ret = subprocess.check_output(cmd,shell=True)

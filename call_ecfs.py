@@ -31,7 +31,7 @@ def read_yaml(file_path):
 
 
 def main(args,parser):
-    HHOME = "/ws/home/ms/dk"
+    HHOME = "/home/"
     #Read arguments from the yaml file
     yaml_args = read_yaml(args.yfile)
 
@@ -43,9 +43,10 @@ def main(args,parser):
 
 
     # Check user's scratch directory and add it to yml options
-    cmd = "echo $SCRATCH"
-    ret = subprocess.check_output(cmd,shell=True)
-    SCRATCH = ret.rstrip().decode('utf-8')
+    #cmd = "echo $SCRATCH"
+    #ret = subprocess.check_output(cmd,shell=True)
+    #SCRATCH = ret.rstrip().decode('utf-8')
+    SCRATCH=os.environ["SCRATCH"]
     #Change final dest to tmp location if only testing
     if args.test:
         print("This is a test!")
@@ -55,7 +56,6 @@ def main(args,parser):
     yaml_args["SCRATCH"] = SCRATCH
     
     #obsdir = yaml_args["OBS"][args.obs]
-
     #if year and month given, fetch data for that year and month
     # Otherwise go through all streams
 
