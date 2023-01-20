@@ -1,0 +1,121 @@
+# List of streams, indicating if they are active or not
+STREAMS:
+  carra_NE_TU:
+    BEG_DATE: 2021060100
+    END_DATE: 2021123123
+    USER: nhx
+    ACTIVE: True
+  carra_IGB_TU:
+    BEG_DATE: 2021060100
+    END_DATE: 2021123123
+    USER: nhx
+    ACTIVE: True
+# These are the paths of the different types of observations
+# If LOCALPATH defined, it will use the local data and
+# not the ECFSPATH
+# Some definitions are just place holders for the moment
+OBS:
+  CONV:
+    ECFS: 
+      PATH: "ec:/nhx/CARRA/obs/CONV/obsoul_update" # "ec:/rml/precise/obs/obsoul/locobs/v11jun20"
+      SUBDIR: "{YYYY}/{MM}"
+      NAMINGCONV: "{YYYYMMDDHH}"
+      FILETYPE: ""
+      FPRE: "obsoul"
+      FEND: ""
+      LOCALPATH: ""
+    LOCALDIR:
+        OBSDIR: "LocalObsdata"
+        SUBDIR: ""
+  RO:
+    ECFS:
+      PATH: "ec:/nhx/CARRA/obs/RO"
+      SUBDIR: ""
+      NAMINGCONV: "{YYYYMM}"
+      FILETYPE: "tar"
+      FPRE: "GPSRO"
+      FEND: ""
+      LOCALPATH: ""
+    LOCALDIR:
+        OBSDIR: "ROdata"
+        SUBDIR: ""
+  CRYO:
+    ECFS:
+      PATH: "ec:/nhx/CARRA/obs/CRYO"
+      SUBDIR: 
+              - "CARRA_NE"
+              - "CARRA_SW"
+      NAMINGCONV: "{YYYYMMDDHH}"
+      FILETYPE: "dat"
+      FPRE: "snow_cryo_5-10km"
+      FEND: ""
+      LOCALPATH: ""
+    LOCALDIR:
+        OBSDIR: "SATSNOWdata"
+        SUBDIR:
+               - "CARRA_NE"
+               - "CARRA_SW"
+  OSISAF:
+    ECFS:
+      PATH: "ec:/nhx/CARRA/obs/OSISAF/osisaf_v5"
+      SUBDIR:
+      NAMINGCONV: "{YYYYMMDD}"
+      FILETYPE: "nc.gz"
+      FPRE: "carra_sst_iceconc"
+      FEND: "v5"
+      LOCALPATH: ""
+    LOCALDIR:
+        OBSDIR: "OSISAF_data"
+        SUBDIR:
+               - "YYYY"
+  SICE:
+    ECFS:
+      PATH: "ec:/nhx/CARRA/obs/S3SICE/v2"
+      SUBDIR: 
+      NAMINGCONV: "{YYYYMMDD}"
+      FILETYPE: "nc"
+      FPRE: "sphere_BBA_combination"
+      FEND: ""
+      LOCALPATH: ""
+    LOCALDIR:
+        OBSDIR: "SICE"
+        SUBDIR:
+               - "YYYY"
+  IASI:
+    ECFS:
+      PATH: "ec:/nhx/CARRA/obs/"
+      SUBDIR: 
+      NAMINGCONV: "{YYYYMMDD}"
+      FILETYPE: "nc"
+      FPRE: "iasi-filtered"
+      FEND: ""
+      LOCALPATH: ""
+    LOCALDIR:
+        OBSDIR: "IASI_DATA"
+        SUBDIR:
+               - "YYYY"
+  GEUS:
+    ECFS:
+      PATH: "ec:/nhx/CARRA/obs/GEUSv2"
+      SUBDIR: 
+      NAMINGCONV: "{YYYYMMDD}"
+      FILETYPE: "nc"
+      FPRE: ""
+      FEND: ""
+      LOCALPATH: ""
+    LOCALDIR:
+        OBSDIR: "GEUS_data"
+        SUBDIR:
+               - "YYYY"
+  GEUS:
+    ECFS:
+      PATH: "ec:/nhx/CARRA/obs/CONV/Denmark/4417_RS_data"
+      SUBDIR: 
+      NAMINGCONV: "{YYYYMMDD}"
+      FILETYPE: "bufr"
+      FPRE: "04417_temp"
+      FEND: ""
+      LOCALPATH: ""
+    LOCALDIR:
+        OBSDIR: "RS_data"
+        SUBDIR:
