@@ -107,7 +107,7 @@ OBS:
         OBSDIR: "GEUS_data"
         SUBDIR:
                - "YYYY"
-  GEUS:
+  RS:
     ECFS:
       PATH: "ec:/nhx/CARRA/obs/CONV/Denmark/4417_RS_data"
       SUBDIR: 

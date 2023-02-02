@@ -36,7 +36,7 @@ MDAYS=0 #if I want to wait longer before checking for data
 MM=08 #integer, no leading zero
 YYYY=2022 #integer
 
-#Examples to call with month and year
+#Examples to call with month and year, test run (output in $SCRATCH/tmp)
 #python3 ./call_ecfs.py -obs CONV -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test
 #python3 ./call_ecfs.py -obs OSISAF -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test
 #python3 ./call_ecfs.py -obs CRYO -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test
