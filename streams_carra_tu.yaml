@@ -34,7 +34,7 @@ OBS:
       NAMINGCONV: "{YYYYMM}"
       FILETYPE: "tar"
       FPRE: "GPSRO"
-      FEND: ""
+      FEND: "Carra"
       LOCALPATH: ""
     LOCALDIR:
         OBSDIR: "ROdata"

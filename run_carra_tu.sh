@@ -1,4 +1,7 @@
-#!/bin/bash
+#!/usr/bin/bash
+#SBATCH --mem-per-cpu=16GB
+#SBATCH --time=8:00:00
+#SBATCH --account=c3srra
 
 module load python3
 
@@ -28,16 +31,10 @@ module load python3
 #python3 ./call_ecfs.py -auto -obs CONV -test
 #python3 ./call_ecfs.py -auto -obs RO -test -mdays 25
 #python3 ./call_ecfs.py -auto -obs CRYO -test -mdays 25
-MDAYS=30 #if I want to wait longer before checking for data
+MDAYS=0 #if I want to wait longer before checking for data
 #Month and year for specifying arguments below
 MM=08 #integer, no leading zero
-YYYY=2020 #integer
-
-#Calls for carra_pan.
-#cd /home/ms/dk/nhx/scr/check_transfer_data/pyecf
-#python3 ./call_ecfs.py -auto -obs IASI -yfile streams_pan.yaml 
-#python3 ./call_ecfs.py -auto -obs SCATT -yfile streams_pan.yaml
-#python3 ./call_ecfs.py -auto -obs CONV -yfile streams_pan.yaml
+YYYY=2022 #integer
 
 #Examples to call with month and year
 #python3 ./call_ecfs.py -obs CONV -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test
@@ -46,8 +43,23 @@ YYYY=2020 #integer
 #python3 ./call_ecfs.py -obs RO -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test
 #python3 ./call_ecfs.py -obs IASI -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test
 #python3 ./call_ecfs.py -obs SICE -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test
-python3 ./call_ecfs.py -obs GEUS -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test
-exit 0
+#python3 ./call_ecfs.py -obs GEUS -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test
+MDAYS=200
+
+if [ -z $1 ]; then
+    echo "No obs type provided. Doing all"	
+    python3 ./call_ecfs.py -obs CONV -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
+    python3 ./call_ecfs.py -obs OSISAF -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
+    python3 ./call_ecfs.py -obs CRYO -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
+    python3 ./call_ecfs.py -obs RO -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
+    python3 ./call_ecfs.py -obs IASI -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test 
+    python3 ./call_ecfs.py -obs SICE -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
+    python3 ./call_ecfs.py -obs GEUS -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
+    exit 0
+else
+    OBS=$1	
+    python3 ./call_ecfs.py -obs $OBS -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
+fi
 
 #python3 ./call_ecfs.py -auto -obs CONV -yfile streams_carra.yaml -test -mdays $MDAYS
 #python3 ./call_ecfs.py -auto -obs CRYO -yfile streams_carra.yaml -test -mdays $MDAYS

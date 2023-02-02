@@ -20,8 +20,13 @@ def fetch_ecfs(obs,ecfs,year,month,destination):
     if obs == 'CONV':
         fetch_CONV(ecfs,year,month,destination)
     elif obs == 'RO':
+        #was doing this for danra:
         #tarball = "_".join(["GPSRO",str(year)+str(month).zfill(2),"Precise"])+".tar"
-        tarball = "_".join([ecfs["FPRE"],str(year)+str(month).zfill(2),ecfs["FEND"]])+"."+ecfs["FILETYPE"]
+        fend=ecfs["FEND"]
+        if len(fend) == 0:
+            tarball = "_".join([ecfs["FPRE"],str(year)+str(month).zfill(2)])+"."+ecfs["FILETYPE"]
+        else:
+            tarball = "_".join([ecfs["FPRE"],str(year)+str(month).zfill(2),fend])+"."+ecfs["FILETYPE"]
         fetch_RO(ecfs,tarball,destination)
     elif obs == 'CRYO':
         fetch_CRYO(ecfs,year,month,destination)
@@ -78,7 +83,7 @@ def fetch_CRYO(ecfs,year,month,destination):
     if len(files_found) != 0:
         fnames = "_".join([ecfs["FPRE"],str(year)+str(month).zfill(2)])+"*"
         cmd="ecp "+os.path.join(obspath,fnames)+' '+destination
-        print("DEBUG CRYO command: %s"%cmd)
+        #print("DEBUG CRYO command: %s"%cmd)
         try:
             ret=subprocess.check_output(cmd,shell=True)
         except subprocess.CalledProcessError as err:
@@ -94,7 +99,10 @@ def fetch_RO_local(localpath,ecfs,year,month,destination):
     print("Attempting to fetch RO observations locally")
     fpre = ecfs["FPRE"]
     fend = ecfs["FEND"]
-    tarball = "_".join([fpre,str(year)+str(month).zfill(2),fend])
+    if len(fend) == 0:
+        Ytarball = "_".join([fpre,str(year)+str(month).zfill(2)])
+    else:    
+        Ytarball = "_".join([fpre,str(year)+str(month).zfill(2),fend])
     obspath = os.path.join(localpath,tarball)
     if os.path.isfile(obspath):
         from shutil import copy2
@@ -129,7 +137,7 @@ def fetch_CONV(ecfs,year,month,destination,cp_com="ecfsdir"):
         files_found = [os.path.join(obspath,f) for f in files_found]
         #print(f"Return from els: {files_found}")
     except subprocess.CalledProcessError as err:
-        print("Error in subprocess {}".format(err))
+        print("CONV: Error in subprocess {}".format(err))
         print(f"Directory {obspath}")
         print(f"Files probably not found!")
         #sys.exit(1)
@@ -141,7 +149,7 @@ def fetch_CONV(ecfs,year,month,destination,cp_com="ecfsdir"):
         elif cp_com == "ecfsdir":
             #for ecfsdir, first copy to local yyyymm, then move to location
             cmd=cp_com+" "+obspath+' '+os.path.join(destination,str(year)+str(month).zfill(2))
-        print("DEBUG obsoul command: %s"%cmd)
+        #print("DEBUG obsoul command: %s"%cmd)
         try:
             ret=subprocess.check_output(cmd,shell=True)
         except subprocess.CalledProcessError as err:
@@ -176,7 +184,7 @@ def fetch_RO(ecfs,tarball,destination):
         files_found = [os.path.join(ecfspath,f) for f in files_found]
         #print(f"Return from els: {files_found}")
     except subprocess.CalledProcessError as err:
-        print("Error in subprocess {}".format(err))
+        print("RO: Error in subprocess {}".format(err))
         print(f"Directory {obspath}")
         print(f"Files probably not found!")
         return
@@ -184,7 +192,7 @@ def fetch_RO(ecfs,tarball,destination):
        
     if len(files_found) != 0:
         cmd="ecp "+obspath+' '+destination
-        print("DEBUG RO command: %s"%cmd)
+        #print("DEBUG RO command: %s"%cmd)
         try:
             ret=subprocess.check_output(cmd,shell=True)
         except subprocess.CalledProcessError as err:
@@ -224,7 +232,7 @@ def fetch_OSISAF(ecfs,year,month,destination):
     if len(files_found) != 0:
         fnames = "_".join([ecfs["FPRE"],str(year)+str(month).zfill(2)])+"*"
         cmd="ecp "+os.path.join(obspath,fnames)+' '+destination
-        print("DEBUG OSISAF command: %s"%cmd)
+        #print("DEBUG OSISAF command: %s"%cmd)
         try:
             ret=subprocess.check_output(cmd,shell=True)
         except subprocess.CalledProcessError as err:

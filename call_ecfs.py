@@ -51,6 +51,7 @@ def main(args,parser):
     if args.test:
         print("This is a test!")
         SCRATCH = os.path.join(SCRATCH,"tmp")
+        print(f"The data will be written in a temporary directory: {SCRATCH}")
     print(f"SCRATCH: {SCRATCH}")
     print(f"Minimum number of days to fetch data: {mdays}")
     yaml_args["SCRATCH"] = SCRATCH
