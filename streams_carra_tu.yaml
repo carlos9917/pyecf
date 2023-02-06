@@ -118,4 +118,18 @@ OBS:
       LOCALPATH: ""
     LOCALDIR:
         OBSDIR: "RS_data"
-        SUBDIR:
+        SUBDIR: 
+               - ""
+  SCATT:
+    ECFS:
+      PATH: "ec:/nhx/CARRA/obs/SCATT"
+      SUBDIR: "{YYYY}/{MM}"
+      NAMINGCONV: "{YYYYMMDDHH}"
+      FILETYPE: ""
+      FPRE: ""
+      FEND: "tar"
+      LOCALPATH: ""
+    LOCALDIR:
+      OBSDIR: "SCATTdata"
+      SUBDIR:
+             - "YYYY/MM"

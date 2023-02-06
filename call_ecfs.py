@@ -1,6 +1,4 @@
-# Get some data for the back extension
-# Gets one month at a time
-
+#!/usr/bin/env python3
 import sys
 import logging
 import configparser
@@ -50,9 +48,10 @@ def main(args,parser):
     #Change final dest to tmp location if only testing
     if args.test:
         print("This is a test!")
-        SCRATCH = os.path.join(SCRATCH,"tmp")
+        SCRATCH = os.path.join(SCRATCH,args.tmp_dir)
         print(f"The data will be written in a temporary directory: {SCRATCH}")
-    print(f"SCRATCH: {SCRATCH}")
+    else:    
+        print(f"Writing data to directories under: {SCRATCH}")
     print(f"Minimum number of days to fetch data: {mdays}")
     yaml_args["SCRATCH"] = SCRATCH
     
@@ -126,18 +125,26 @@ if __name__=='__main__':
                         type=str,
                         default="CONV",
                         required=False)
-    #if this one is used it will get the year and month from the latest progress.log
+    #if this one is used it will get the year and month from the latest progress.log.
     parser.add_argument('-auto',action='store_true',help="If selected it will decide month and year based on current progressMCI.log") # set to false by default
+
+    #If this option is selected it will write the data in the directory specified by tmp_dir
     parser.add_argument('-test',action='store_true',help="For testing. It will write all data in directories $SCRATCH/tmp") # set to false by default
     parser.add_argument('-yfile',metavar='name of the yaml config file (default is streams.yaml)',
                         type=str,
                         default="./streams.yaml",
                         required=False)
+
     #This variable controls how many days to wait until fetching data
     # (ie, how many days left until the end of the current month being simulated)
     parser.add_argument('-mdays',metavar='Maximum number of days to check for data',
                         type=float,
                         default=15,
+                        required=False)
+
+    parser.add_argument('-tmp_dir',metavar='Temporary directory to write the data. Used when test is activated',
+                        type=str,
+                        default="tmp",
                         required=False)
 
     args = parser.parse_args()

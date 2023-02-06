@@ -6,7 +6,7 @@ def fetch_RS(ecfs,year,month,destination):
     Fetch RS data
     '''
     ecfspath = ecfs["PATH"]
-    yy=str(year)[0:2]
+    yy=str(year)[2:4]
     mm=str(month).zfill(2)
     obspath = os.path.join(ecfspath)
     print(f"Attempting to fetch RS observations from {obspath}")

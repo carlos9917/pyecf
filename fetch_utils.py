@@ -8,6 +8,9 @@ import date_utils as du
 import sys
 
 def fetch_local(obs,ecfs,localpath,year,month,destination):
+    """
+    Special case for some local data
+    """
     if obs == 'RO':
         fetch_RO_local(localpath,ecfs,year,month,destination)
     else:
@@ -44,10 +47,13 @@ def fetch_ecfs(obs,ecfs,year,month,destination):
     elif obs == 'GEUS':
         import GEUSdata
         GEUSdata.fetch_GEUS(ecfs,year,destination)
+    elif obs == 'RS':
+        import RSdata
+        RSdata.fetch_RS(ecfs,year,month,destination)
     else:
         ecfspath = ecfs["PATH"]
         print(f"No implementation for {ecfspath} just yet!")
-        print("Currently doing ONLY CONV, RO, CRYO and OSISAF observations")
+        #print("Currently doing ONLY CONV, RO, CRYO and OSISAF observations")
         sys.exit()
 
 
@@ -285,10 +291,11 @@ def fetch_data(yaml_args):
 
     print(f"Checking if {obs} data for {year}/{month} is already there")
     #note, this is the min number for files, for those with 28 it is really the number of days
-    #todo: define this as number of days in month
+    #TODO: define this as number of days in month
     #for geus, those are julian days, for a few months of the year
     fmin = { "CONV": 200, "RO": 8, "CRYO": 28, "OSISAF": 28,
-            "SCATT":1, "IASI":120, "SICE":28,"GEUS":240}
+            "SCATT":1, "IASI":120, "SICE":28,"GEUS":240,
+            "RS":1}
     destination = create_destination(obsdir,year,month,scratch)
     #use this path instead of the ECFS path if it is defined
     localpath = yaml_args["OBS"][obs]["ECFS"]["LOCALPATH"]
