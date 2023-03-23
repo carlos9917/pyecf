@@ -26,18 +26,18 @@ module load python3
 MDAYS=100 #if I want to wait longer before checking for data
 
 #Examples to call with month and year, test run (output in $SCRATCH/tmp_obs_copy)
-MM=8 #integer, no leading zero
-YYYY=2022 #integer
-#python3 ./call_ecfs.py -obs CONV -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test -tmp_dir "tmp_obs_copy"
-#python3 ./call_ecfs.py -obs OSISAF -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test -tmp_dir "tmp_obs_copy"
-#python3 ./call_ecfs.py -obs CRYO -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test -tmp_dir "tmp_obs_copy"
-#python3 ./call_ecfs.py -obs RO -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test -tmp_dir "tmp_obs_copy"
-#python3 ./call_ecfs.py -obs RS -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test -tmp_dir "tmp_obs_copy"
-#python3 ./call_ecfs.py -obs IASI -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test -tmp_dir "tmp_obs_copy"
-#python3 ./call_ecfs.py -obs SICE -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test -tmp_dir "tmp_obs_copy"
-#python3 ./call_ecfs.py -obs GEUS -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test -tmp_dir "tmp_obs_copy"
-#python3 ./call_ecfs.py -obs SCATT -yfile streams_carra_tu.yaml -month $MM -year $YYYY -test -tmp_dir "tmp_obs_copy"
-#exit
+MM=2 #integer, no leading zero
+YYYY=2023 #integer
+python3 ./call_ecfs.py -obs CONV -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
+python3 ./call_ecfs.py -obs OSISAF -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
+python3 ./call_ecfs.py -obs CRYO -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
+python3 ./call_ecfs.py -obs RO -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
+python3 ./call_ecfs.py -obs RS -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
+python3 ./call_ecfs.py -obs IASI -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
+python3 ./call_ecfs.py -obs SICE -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
+python3 ./call_ecfs.py -obs GEUS -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
+python3 ./call_ecfs.py -obs SCATT -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
+exit
 
 
 # This example copies everything to $SCRATCH/tmp Get rid of the "-test" option to copy to directories under $SCRATCH
