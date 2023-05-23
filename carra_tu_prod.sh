@@ -28,23 +28,33 @@ copy_data()
 MDAYS=10 #set this if I want to wait longer before checking for data
 
 # TODO: uncomment following 6 lines, comment lines 7 and 8 after this comment
-#dtgstart=$(date -d "`date +%Y%m01` -2 month" +%Y%m%d)
-#echo "Current dtg: $dtgstart"
-#YYYY=$(echo $dtgstart | awk '{print substr($1,1,4)}')
-#mm=$(echo $dtgstart | awk '{print substr($1,5,2)}')
-#MM=$(echo $mm | sed 's/^0*//')
-#echo "Doing $YYYY $MM, according to $dtgstart"
-MM=3 #integer, no leading zero
-YYYY=2023 #integer
-python3 ./call_ecfs.py -obs CONV -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
-python3 ./call_ecfs.py -obs OSISAF -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
-python3 ./call_ecfs.py -obs CRYO -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
-python3 ./call_ecfs.py -obs RO -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
-python3 ./call_ecfs.py -obs RS -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
-python3 ./call_ecfs.py -obs IASI -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
-python3 ./call_ecfs.py -obs SICE -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
-python3 ./call_ecfs.py -obs GEUS -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
-python3 ./call_ecfs.py -obs SCATT -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
+dtgstart=$(date -d "`date +%Y%m01` -2 month" +%Y%m%d)
+echo "Current dtg: $dtgstart"
+YYYY=$(echo $dtgstart | awk '{print substr($1,1,4)}')
+mm=$(echo $dtgstart | awk '{print substr($1,5,2)}')
+MM=$(echo $mm | sed 's/^0*//')
+echo "Doing $YYYY $MM, according to $dtgstart"
+#test:
+#MM=2 #integer, no leading zero
+#YYYY=2023 #integer
+#copy data for this month
+python3 ./call_ecfs.py -obs CONV -yfile streams_carra_tu.yaml -month $MM -year $YYYY
+python3 ./call_ecfs.py -obs OSISAF -yfile streams_carra_tu.yaml -month $MM -year $YYYY
+python3 ./call_ecfs.py -obs CRYO -yfile streams_carra_tu.yaml -month $MM -year $YYYY
+python3 ./call_ecfs.py -obs RO -yfile streams_carra_tu.yaml -month $MM -year $YYYY 
+python3 ./call_ecfs.py -obs RS -yfile streams_carra_tu.yaml -month $MM -year $YYYY
+python3 ./call_ecfs.py -obs IASI -yfile streams_carra_tu.yaml -month $MM -year $YYYY 
+python3 ./call_ecfs.py -obs SICE -yfile streams_carra_tu.yaml -month $MM -year $YYYY 
+python3 ./call_ecfs.py -obs GEUS -yfile streams_carra_tu.yaml -month $MM -year $YYYY 
+python3 ./call_ecfs.py -obs SCATT -yfile streams_carra_tu.yaml -month $MM -year $YYYY 
+
+#extra: copy data for next month for IASI:
+dtgstart=$(date -d "`date +%Y%m01` -1 month" +%Y%m%d)
+YYYY=$(echo $dtgstart | awk '{print substr($1,1,4)}')
+mm=$(echo $dtgstart | awk '{print substr($1,5,2)}')
+MM=$(echo $mm | sed 's/^0*//')
+echo "Doing also $YYYY $MM for IASI, since the data for the following month is also needed there"
+python3 ./call_ecfs.py -obs IASI -yfile streams_carra_tu.yaml -month $MM -year $YYYY 
 exit
 }
 
@@ -70,4 +80,5 @@ fi
 }
 
 #follow_cli
+
 copy_data
