@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 #SBATCH --mem-per-cpu=16GB
+#SBATCH --error=log-fetch-carra%j.err
+#SBATCH --output=log-fetch-carra%j.out
 #SBATCH --time=8:00:00
 #SBATCH --account=c3srra
 

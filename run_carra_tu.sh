@@ -34,7 +34,7 @@ MDAYS=10 #set this if I want to wait longer before checking for data
 #mm=$(echo $dtgstart | awk '{print substr($1,5,2)}')
 #MM=$(echo $mm | sed 's/^0*//')
 #echo "Doing $YYYY $MM, according to $dtgstart"
-MM=3 #integer, no leading zero
+MM=7 #integer, no leading zero
 YYYY=2023 #integer
 python3 ./call_ecfs.py -obs CONV -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
 python3 ./call_ecfs.py -obs OSISAF -yfile streams_carra_tu.yaml -month $MM -year $YYYY #-test -tmp_dir "tmp_obs_copy"
@@ -51,23 +51,27 @@ exit
 follow_cli()
 {
 # This example copies everything to $SCRATCH/tmp Get rid of the "-test" option to copy to directories under $SCRATCH
-if [ -z $1 ]; then
-    echo "No obs type provided. Doing all"	
-    python3 ./call_ecfs.py -obs CONV -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
-    python3 ./call_ecfs.py -obs OSISAF -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
-    python3 ./call_ecfs.py -obs CRYO -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
-    python3 ./call_ecfs.py -obs RO -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
-    python3 ./call_ecfs.py -obs RS -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
-    python3 ./call_ecfs.py -obs IASI -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test 
-    python3 ./call_ecfs.py -obs SICE -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
-    python3 ./call_ecfs.py -obs GEUS -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
-    python3 ./call_ecfs.py -obs SCATT -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
-    exit 0
-else
-    OBS=$1	
-    python3 ./call_ecfs.py -obs $OBS -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
-fi
+#if [ -z $OBS ]; then
+#    echo "No obs type provided. Doing all"	
+#    echo $OBS
+#    exit 
+#    python3 ./call_ecfs.py -obs CONV -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
+#    python3 ./call_ecfs.py -obs OSISAF -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
+#    python3 ./call_ecfs.py -obs CRYO -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
+#    python3 ./call_ecfs.py -obs RO -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
+#    python3 ./call_ecfs.py -obs RS -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
+#    python3 ./call_ecfs.py -obs IASI -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test 
+#    python3 ./call_ecfs.py -obs SICE -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
+#    python3 ./call_ecfs.py -obs GEUS -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
+#    python3 ./call_ecfs.py -obs SCATT -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
+#    exit 0
+#else
+    #python3 ./call_ecfs.py -obs $OBS -yfile streams_carra_tu.yaml -mdays $MDAYS -auto -test
+    OBS=IASI
+    MM=7
+    YYYY=2023
+    python3 ./call_ecfs.py -obs $OBS -yfile streams_carra_tu.yaml -month $MM -year $YYYY
+#fi
 }
-
 #follow_cli
 copy_data
